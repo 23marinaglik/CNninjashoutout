@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ninja Shoutout</title>
 
+  <!-- iPad / iPhone web app meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Ninja Shoutout">
@@ -342,12 +343,13 @@
     </header>
 
     <section class="card" aria-live="polite">
+      <!-- STEP 1: DETAILS -->
       <div class="step-header">
         <div class="step-number">1</div>
         <div>
           <h2>Who are we celebrating today?</h2>
           <p class="step-description">
-            Fill in the Ninja’s name and choose a shout-out type. Marina + the $99 membership offer are added only to the text message.
+            Fill in the Ninja’s name and choose a shout-out type. The image shows just the shout-out; the text message also includes the sender + $99 offer.
           </p>
         </div>
       </div>
@@ -355,6 +357,14 @@
       <div class="question-container">
         <label for="ninjaName" class="field-label">Ninja’s name</label>
         <input id="ninjaName" type="text" placeholder="e.g., Alex, Sophia, Ethan" autocomplete="off" />
+      </div>
+
+      <div class="question-container">
+        <label for="senderName" class="field-label">Sender name (who is texting?)</label>
+        <input id="senderName" type="text" placeholder="e.g., Marina" value="Marina" autocomplete="off" />
+        <div class="inline-note">
+          This name will appear in the text as: <em>“Hi! This is &lt;name&gt; from Code Ninjas Cooper City…”</em>
+        </div>
       </div>
 
       <div class="question-container">
@@ -463,12 +473,13 @@
         </div>
       </div>
 
+      <!-- STEP 2: TEXT MESSAGE -->
       <div class="step-header" style="margin-top:12px;">
         <div class="step-number">2</div>
         <div>
           <h2>Text message preview</h2>
           <p class="step-description">
-            We’ll auto-include Marina’s intro + the $99 membership line here. The image only uses the core shout-out.
+            We’ll auto-include the sender’s name + the $99 membership line here. The image only uses the main shout-out + website line.
           </p>
         </div>
       </div>
@@ -484,19 +495,20 @@
 
       <div class="actions-row">
         <button class="btn ghost" type="button" id="generateBtn">
-          Generate shout-out
+          ✨ Generate shout-out
         </button>
         <button class="btn primary" type="button" id="copyBtn">
-          Copy text message
+          📋 Copy text message
         </button>
       </div>
 
+      <!-- STEP 3: IMAGE OVERLAY -->
       <div class="step-header" style="margin-top:18px;">
         <div class="step-number">3</div>
         <div>
           <h2>Ninja shout-out picture</h2>
           <p class="step-description">
-            Upload a photo and we’ll overlay the Ninja Shoutout frame and the core message (without Marina / $99 text).
+            Upload a photo and we’ll overlay the Ninja Shoutout frame and the core message in the bottom-right corner (plus CodeNinjas.com).
           </p>
         </div>
       </div>
@@ -514,7 +526,7 @@
           <canvas id="shoutoutCanvas" width="1650" height="1275"></canvas>
           <div class="actions-row" style="justify-content:flex-start;margin-top:4px;">
             <button class="btn ghost" type="button" id="renderImageBtn">
-              Generate shout-out image
+              🖼 Generate shout-out image
             </button>
             <button class="btn" type="button" id="downloadImageBtn" disabled>
               ⬇ Download image
@@ -529,9 +541,11 @@
   </div>
 
   <script>
-    function baseMessage(name, content){
+    // ===== TEXT TEMPLATES =====
+    function baseMessage(ninjaName, content, senderName){
+      const sender = (senderName || "Marina").trim();
       return (
-        `Hi! This is Marina from Code Ninjas Cooper City 🥷💙\n\n` +
+        `Hi! This is ${sender} from Code Ninjas Cooper City 🥷💙\n\n` +
         content +
         `\n\nAs a thank-you, if you share the picture we took today on ANY social media platform, you’ll receive $99 off your membership for every person that signs up for a membership because of your post! 🎉`
       );
@@ -580,7 +594,7 @@
     }
 
     function buildCoreMessage(name, reason, customReason){
-      const trimmedName = name.trim();
+      const trimmedName = (name || "").trim();
       if(!trimmedName) return "";
 
       if(reason === "custom"){
@@ -593,12 +607,13 @@
       return randomFrom(options)(trimmedName);
     }
 
-    function buildFullSms(name, reason, customReason){
+    function buildFullSms(name, reason, customReason, senderName){
       const core = buildCoreMessage(name, reason, customReason);
       if(!core) return "";
-      return baseMessage(name.trim(), core);
+      return baseMessage(name.trim(), core, senderName);
     }
 
+    // ===== BANNERS / CLIPBOARD =====
     function showOk(msg){
       const el = document.getElementById("okBanner");
       el.textContent = msg || "Copied! You can paste this into your text app. 📲";
@@ -629,6 +644,7 @@
       }
     }
 
+    // ===== IMAGE / CANVAS =====
     let userImage = null;
     let frameImage = null;
     let frameLoaded = false;
@@ -641,6 +657,7 @@
       frameImage.onload = function(){
         frameLoaded = true;
       };
+      // PNG must live next to this HTML file
       frameImage.src = "ninja-shoutout-frame.png";
     }
 
@@ -670,74 +687,104 @@
       ctx.drawImage(img, sx, sy, sw, sh);
     }
 
-    function wrapText(ctx, text, x, y, maxWidth, lineHeight){
-      const words = text.split(/\s+/);
+    function renderShoutoutText() {
+      const message = latestCoreMessage;
+      if (!message) return;
+
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.font = "36px system-ui, -apple-system, 'Segoe UI', sans-serif";
+      ctx.fillStyle = "#ffffff";
+      ctx.textBaseline = "top";
+
+      const maxWidth = 700;
+      const lineHeight = 50;
+
+      // wrap text
+      const words = message.split(/\s+/);
+      let lines = [];
       let line = "";
-      for(let n = 0; n < words.length; n++){
+
+      for (let n = 0; n < words.length; n++) {
         const testLine = line + words[n] + " ";
-        const metrics = ctx.measureText(testLine);
-        if(metrics.width > maxWidth && n > 0){
-          ctx.fillText(line, x, y);
-          y += lineHeight;
+        if (ctx.measureText(testLine).width > maxWidth && n > 0) {
+          lines.push(line);
           line = words[n] + " ";
-        }else{
+        } else {
           line = testLine;
         }
       }
-      if(line){
-        ctx.fillText(line, x, y);
-      }
+      if (line) lines.push(line);
+
+      const textHeight = lines.length * lineHeight;
+
+      // bottom-right
+      const margin = 80;
+      const bgWidth = maxWidth + 60;
+      const bgHeight = textHeight + 100; // extra space for website line
+
+      const bgX = w - bgWidth - margin;
+      const bgY = h - bgHeight - margin;
+
+      // background
+      ctx.fillStyle = "rgba(0,0,0,0.45)";
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(bgX, bgY, bgWidth, bgHeight, 25);
+      else ctx.rect(bgX, bgY, bgWidth, bgHeight);
+      ctx.fill();
+
+      ctx.fillStyle = "#ffffff";
+      let textX = bgX + 30;
+      let textY = bgY + 20;
+
+      // draw each line
+      lines.forEach(l => {
+        ctx.fillText(l.trim(), textX, textY);
+        textY += lineHeight;
+      });
+
+      // Website line
+      ctx.font = "28px system-ui, -apple-system, 'Segoe UI', sans-serif";
+      ctx.fillStyle = "rgba(255,255,255,0.9)";
+      ctx.fillText("Visit CodeNinjas.com to learn more!", textX, textY + 10);
     }
 
     function renderShoutoutImage(){
-      function renderShoutoutImage() {
-  if (!latestCoreMessage) {
-    showErr("Generate a shout-out first so we know what text to place on the image.");
-    return;
-  }
-  if (!userImage) {
-    showErr("Please upload a Ninja photo first.");
-    return;
-  }
-  if (!frameLoaded) {
-    showErr("Frame image is still loading. Wait a moment and try again.");
-    return;
-  }
+      if(!latestCoreMessage){
+        showErr("Generate a shout-out first so we know what text to place on the image.");
+        return;
+      }
+      if(!userImage){
+        showErr("Please upload a Ninja photo first.");
+        return;
+      }
+      if(!frameLoaded){
+        showErr("Frame image is still loading. Wait a moment and try again.");
+        return;
+      }
 
-  const w = canvas.width;
-  const h = canvas.height;
+      const w = canvas.width;
+      const h = canvas.height;
 
-  ctx.clearRect(0, 0, w, h);
+      ctx.clearRect(0,0,w,h);
 
-  drawCoverImage(userImage, ctx, w, h);
+      // 1) Background photo
+      drawCoverImage(userImage, ctx, w, h);
 
-  ctx.drawImage(frameImage, 0, 0, w, h);
+      // 2) Overlay frame PNG
+      ctx.drawImage(frameImage, 0, 0, w, h);
 
-  renderShoutoutText();   // <-- THIS replaces the old text code
-}
+      // 3) Text in bottom-right
+      renderShoutoutText();
+    }
 
-  // background box
-  ctx.fillStyle = "rgba(0,0,0,0.45)";
-  ctx.beginPath();
-  if (ctx.roundRect) ctx.roundRect(bgX, bgY, bgWidth, bgHeight, 25);
-  else ctx.rect(bgX, bgY, bgWidth, bgHeight);
-  ctx.fill();
-
-  // draw text inside padded area
-  ctx.fillStyle = "#ffffff";
-  let textX = bgX + 30;
-  let textY = bgY + 20;
-
-  lines.forEach(l => {
-    ctx.fillText(l.trim(), textX, textY);
-    textY += lineHeight;
-  });
-}
-
+    // ===== MAIN UI HOOKUP =====
     document.addEventListener("DOMContentLoaded", function(){
       loadFrame();
 
       const nameInput = document.getElementById("ninjaName");
+      const senderInput = document.getElementById("senderName");
       const customInput = document.getElementById("customReason");
       const output = document.getElementById("messageOutput");
       const generateBtn = document.getElementById("generateBtn");
@@ -777,6 +824,7 @@
         const name = nameInput.value;
         const reason = getSelectedReason();
         const custom = customInput.value;
+        const senderName = senderInput.value || "Marina";
 
         if(!name.trim()){
           showErr("Please enter the Ninja’s name first.");
@@ -795,7 +843,7 @@
         }
         latestCoreMessage = core;
 
-        const fullSms = buildFullSms(name, reason, custom);
+        const fullSms = buildFullSms(name, reason, custom, senderName);
         output.value = fullSms;
         showOk("Shout-out generated! You can tweak the text if needed.");
       });
@@ -840,4 +888,3 @@
   </script>
 </body>
 </html>
-
