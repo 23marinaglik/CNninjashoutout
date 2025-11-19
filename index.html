@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ninja Shoutout</title>
 
-  <!-- iPad / iPhone web app meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Ninja Shoutout">
@@ -343,7 +342,6 @@
     </header>
 
     <section class="card" aria-live="polite">
-      <!-- STEP 1: DETAILS -->
       <div class="step-header">
         <div class="step-number">1</div>
         <div>
@@ -465,7 +463,6 @@
         </div>
       </div>
 
-      <!-- STEP 2: TEXT MESSAGE -->
       <div class="step-header" style="margin-top:12px;">
         <div class="step-number">2</div>
         <div>
@@ -487,14 +484,13 @@
 
       <div class="actions-row">
         <button class="btn ghost" type="button" id="generateBtn">
-          ✨ Generate shout-out
+          Generate shout-out
         </button>
         <button class="btn primary" type="button" id="copyBtn">
-          📋 Copy text message
+          Copy text message
         </button>
       </div>
 
-      <!-- STEP 3: IMAGE OVERLAY -->
       <div class="step-header" style="margin-top:18px;">
         <div class="step-number">3</div>
         <div>
@@ -518,7 +514,7 @@
           <canvas id="shoutoutCanvas" width="1650" height="1275"></canvas>
           <div class="actions-row" style="justify-content:flex-start;margin-top:4px;">
             <button class="btn ghost" type="button" id="renderImageBtn">
-              🖼 Generate shout-out image
+              Generate shout-out image
             </button>
             <button class="btn" type="button" id="downloadImageBtn" disabled>
               ⬇ Download image
@@ -533,7 +529,6 @@
   </div>
 
   <script>
-    // ===== TEXT TEMPLATES =====
     function baseMessage(name, content){
       return (
         `Hi! This is Marina from Code Ninjas Cooper City 🥷💙\n\n` +
@@ -604,7 +599,6 @@
       return baseMessage(name.trim(), core);
     }
 
-    // ===== BANNERS / CLIPBOARD =====
     function showOk(msg){
       const el = document.getElementById("okBanner");
       el.textContent = msg || "Copied! You can paste this into your text app. 📲";
@@ -635,7 +629,6 @@
       }
     }
 
-    // ===== IMAGE / CANVAS =====
     let userImage = null;
     let frameImage = null;
     let frameLoaded = false;
@@ -648,7 +641,6 @@
       frameImage.onload = function(){
         frameLoaded = true;
       };
-      // PNG must live next to this HTML file
       frameImage.src = "ninja-shoutout-frame.png";
     }
 
@@ -698,58 +690,50 @@
     }
 
     function renderShoutoutImage(){
-      if(!latestCoreMessage){
-        showErr("Generate a shout-out first so we know what text to place on the image.");
-        return;
-      }
-      if(!userImage){
-        showErr("Please upload a Ninja photo first.");
-        return;
-      }
-      if(!frameLoaded){
-        showErr("Frame image is still loading. Wait a moment and try again.");
-        return;
-      }
+      function renderShoutoutImage() {
+  if (!latestCoreMessage) {
+    showErr("Generate a shout-out first so we know what text to place on the image.");
+    return;
+  }
+  if (!userImage) {
+    showErr("Please upload a Ninja photo first.");
+    return;
+  }
+  if (!frameLoaded) {
+    showErr("Frame image is still loading. Wait a moment and try again.");
+    return;
+  }
 
-      const w = canvas.width;
-      const h = canvas.height;
+  const w = canvas.width;
+  const h = canvas.height;
 
-      ctx.clearRect(0,0,w,h);
+  ctx.clearRect(0, 0, w, h);
 
-      // 1) Background photo
-      drawCoverImage(userImage, ctx, w, h);
+  drawCoverImage(userImage, ctx, w, h);
 
-      // 2) Overlay frame PNG
-      ctx.drawImage(frameImage, 0, 0, w, h);
+  ctx.drawImage(frameImage, 0, 0, w, h);
 
-      // 3) Text block with core message only
-      const paddingX = 420;
-      const paddingY = 380;
-      const textWidth = w - paddingX - 140;
-      const lineHeight = 52;
+  renderShoutoutText();   // <-- THIS replaces the old text code
+}
 
-      const bgX = paddingX - 30;
-      const bgY = paddingY - 20;
-      const bgWidth = textWidth + 60;
-      const bgHeight = 220;
+  // background box
+  ctx.fillStyle = "rgba(0,0,0,0.45)";
+  ctx.beginPath();
+  if (ctx.roundRect) ctx.roundRect(bgX, bgY, bgWidth, bgHeight, 25);
+  else ctx.rect(bgX, bgY, bgWidth, bgHeight);
+  ctx.fill();
 
-      ctx.fillStyle = "rgba(0,0,0,0.45)";
-      ctx.beginPath();
-      if(ctx.roundRect){
-        ctx.roundRect(bgX, bgY, bgWidth, bgHeight, 20);
-      }else{
-        ctx.rect(bgX, bgY, bgWidth, bgHeight);
-      }
-      ctx.fill();
+  // draw text inside padded area
+  ctx.fillStyle = "#ffffff";
+  let textX = bgX + 30;
+  let textY = bgY + 20;
 
-      ctx.font = "36px system-ui, -apple-system, 'Segoe UI', sans-serif";
-      ctx.fillStyle = "#ffffff";
-      ctx.textBaseline = "top";
+  lines.forEach(l => {
+    ctx.fillText(l.trim(), textX, textY);
+    textY += lineHeight;
+  });
+}
 
-      wrapText(ctx, latestCoreMessage, paddingX, paddingY, textWidth, lineHeight);
-    }
-
-    // ===== MAIN UI HOOKUP =====
     document.addEventListener("DOMContentLoaded", function(){
       loadFrame();
 
@@ -856,3 +840,4 @@
   </script>
 </body>
 </html>
+
