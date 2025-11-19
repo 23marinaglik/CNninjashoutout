@@ -1,16 +1,12 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ninja Shoutout</title>
-
-  <!-- iPad / iPhone web app meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Ninja Shoutout">
-  <!-- Home screen icon (put icon-180.png in same folder) -->
-  <link rel="apple-touch-icon" href="icon-180.png">
 
   <style>
     :root{
@@ -315,6 +311,18 @@
       background:#020617;
     }
 
+    .step{
+      display:none;
+      animation:fade .22s ease;
+    }
+    .step.active{
+      display:block;
+    }
+    @keyframes fade{
+      from{opacity:0;transform:translateY(4px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
     @media (max-width:640px){
       body{
         padding:12px;
@@ -343,194 +351,246 @@
     </header>
 
     <section class="card" aria-live="polite">
-      <!-- STEP 1: DETAILS -->
-      <div class="step-header">
-        <div class="step-number">1</div>
-        <div>
-          <h2>Who are we celebrating today?</h2>
-          <p class="step-description">
-            Fill in the Ninja’s name and choose a shout-out type. The image shows just the shout-out; the text message also includes the sender + $99 offer.
-          </p>
-        </div>
-      </div>
-
-      <div class="question-container">
-        <label for="ninjaName" class="field-label">Ninja’s name</label>
-        <input id="ninjaName" type="text" placeholder="e.g., Alex, Sophia, Ethan" autocomplete="off" />
-      </div>
-
-      <div class="question-container">
-        <label for="senderName" class="field-label">Sender name (who is texting?)</label>
-        <input id="senderName" type="text" placeholder="e.g., Marina" value="Marina" autocomplete="off" />
-        <div class="inline-note">
-          This name will appear in the text as: <em>“Hi! This is &lt;name&gt; from Code Ninjas Cooper City…”</em>
-        </div>
-      </div>
-
-      <div class="question-container">
-        <label class="field-label">What are we shouting them out for?</label>
-        <div class="options-grid" id="shoutoutGrid">
-          <label class="shoutout-option">
-            <input type="radio" name="reason" value="belt">
-            <div class="option-content">
-              <div class="option-icon">🎉</div>
-              <div>
-                <div class="option-text">Belt-up celebration</div>
-                <div class="option-sub">Leveling up their belt in the dojo.</div>
-              </div>
-            </div>
-          </label>
-
-          <label class="shoutout-option">
-            <input type="radio" name="reason" value="project">
-            <div class="option-content">
-              <div class="option-icon">💻</div>
-              <div>
-                <div class="option-text">Cool project</div>
-                <div class="option-sub">Finished something awesome in class.</div>
-              </div>
-            </div>
-          </label>
-
-          <label class="shoutout-option">
-            <input type="radio" name="reason" value="outstanding">
-            <div class="option-content">
-              <div class="option-icon">⭐</div>
-              <div>
-                <div class="option-text">Outstanding student</div>
-                <div class="option-sub">Focus, effort, and all-around rockstar Ninja.</div>
-              </div>
-            </div>
-          </label>
-
-          <label class="shoutout-option">
-            <input type="radio" name="reason" value="behavior">
-            <div class="option-content">
-              <div class="option-icon">😊</div>
-              <div>
-                <div class="option-text">Well-behaved</div>
-                <div class="option-sub">Respectful, kind, and a great example.</div>
-              </div>
-            </div>
-          </label>
-
-          <label class="shoutout-option">
-            <input type="radio" name="reason" value="helper">
-            <div class="option-content">
-              <div class="option-icon">🤝</div>
-              <div>
-                <div class="option-text">Helped another student</div>
-                <div class="option-sub">Showing leadership and teamwork.</div>
-              </div>
-            </div>
-          </label>
-
-          <label class="shoutout-option">
-            <input type="radio" name="reason" value="attendance">
-            <div class="option-content">
-              <div class="option-icon">📅</div>
-              <div>
-                <div class="option-text">Great attendance</div>
-                <div class="option-sub">Showing up consistently to level up.</div>
-              </div>
-            </div>
-          </label>
-
-          <label class="shoutout-option">
-            <input type="radio" name="reason" value="leadership">
-            <div class="option-content">
-              <div class="option-icon">🧠</div>
-              <div>
-                <div class="option-text">Leadership / teamwork</div>
-                <div class="option-sub">Going above and beyond with others.</div>
-              </div>
-            </div>
-          </label>
-
-          <label class="shoutout-option">
-            <input type="radio" name="reason" value="custom">
-            <div class="option-content">
-              <div class="option-icon">✨</div>
-              <div>
-                <div class="option-text">Custom shout-out</div>
-                <div class="option-sub">Use your own wording (focus, kindness, etc.).</div>
-              </div>
-            </div>
-          </label>
+      <div class="step active" id="step1">
+        <div class="step-header">
+          <div class="step-number">1</div>
+          <div>
+            <h2>Who are we celebrating today?</h2>
+            <p class="step-description">
+              Fill in the Ninja’s name and choose a shout-out type. Birthday + tour have special offers baked into the text.
+            </p>
+          </div>
         </div>
 
-        <div style="margin-top:8px;">
-          <label for="customReason" class="field-label">If custom, what are we celebrating? (optional)</label>
+        <div class="question-container">
+          <label for="ninjaName" class="field-label">Ninja’s name</label>
+          <input id="ninjaName" type="text" placeholder="e.g., Alex, Sophia, Ethan" autocomplete="off" />
+        </div>
+
+        <div class="question-container">
+          <label for="senderName" class="field-label">Sender name (who is texting?)</label>
+          <input id="senderName" type="text" placeholder="e.g., Marina" value="Marina" autocomplete="off" />
+          <div class="inline-note">
+            This name will appear in the text as: <em>“Hi! This is &lt;name&gt; from Code Ninjas Cooper City…”</em>
+          </div>
+        </div>
+
+        <div class="question-container">
+          <label class="field-label">What are we shouting them out for?</label>
+          <div class="options-grid" id="shoutoutGrid">
+            <label class="shoutout-option">
+              <input type="radio" name="reason" value="belt">
+              <div class="option-content">
+                <div class="option-icon">🎉</div>
+                <div>
+                  <div class="option-text">Belt-up celebration</div>
+                  <div class="option-sub">Leveling up their belt in the dojo.</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="shoutout-option">
+              <input type="radio" name="reason" value="project">
+              <div class="option-content">
+                <div class="option-icon">💻</div>
+                <div>
+                  <div class="option-text">Cool project</div>
+                  <div class="option-sub">Finished something awesome in class.</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="shoutout-option">
+              <input type="radio" name="reason" value="outstanding">
+              <div class="option-content">
+                <div class="option-icon">⭐</div>
+                <div>
+                  <div class="option-text">Outstanding student</div>
+                  <div class="option-sub">Focus, effort, and all-around rockstar Ninja.</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="shoutout-option">
+              <input type="radio" name="reason" value="behavior">
+              <div class="option-content">
+                <div class="option-icon">😊</div>
+                <div>
+                  <div class="option-text">Well-behaved</div>
+                  <div class="option-sub">Respectful, kind, and a great example.</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="shoutout-option">
+              <input type="radio" name="reason" value="helper">
+              <div class="option-content">
+                <div class="option-icon">🤝</div>
+                <div>
+                  <div class="option-text">Helped another student</div>
+                  <div class="option-sub">Showing leadership and teamwork.</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="shoutout-option">
+              <input type="radio" name="reason" value="attendance">
+              <div class="option-content">
+                <div class="option-icon">📅</div>
+                <div>
+                  <div class="option-text">Great attendance</div>
+                  <div class="option-sub">Showing up consistently to level up.</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="shoutout-option">
+              <input type="radio" name="reason" value="leadership">
+              <div class="option-content">
+                <div class="option-icon">🧠</div>
+                <div>
+                  <div class="option-text">Leadership / teamwork</div>
+                  <div class="option-sub">Going above and beyond with others.</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="shoutout-option">
+              <input type="radio" name="reason" value="birthday">
+              <div class="option-content">
+                <div class="option-icon">🎂</div>
+                <div>
+                  <div class="option-text">Birthday shout-out</div>
+                  <div class="option-sub">We loved celebrating their special day.</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="shoutout-option">
+              <input type="radio" name="reason" value="tour">
+              <div class="option-content">
+                <div class="option-icon">🏯</div>
+                <div>
+                  <div class="option-text">Tour follow-up</div>
+                  <div class="option-sub">Invite them back after their dojo tour.</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="shoutout-option">
+              <input type="radio" name="reason" value="custom">
+              <div class="option-content">
+                <div class="option-icon">✨</div>
+                <div>
+                  <div class="option-text">Custom shout-out</div>
+                  <div class="option-sub">Use your own wording (focus, kindness, etc.).</div>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div style="margin-top:8px;">
+            <label for="customReason" class="field-label">If custom, what are we celebrating? (optional)</label>
+            <input
+              id="customReason"
+              type="text"
+              placeholder='e.g., "amazing focus today", "being so kind to others"'
+              autocomplete="off"
+            />
+            <div class="inline-note">
+              If you choose “Custom shout-out” above, we’ll plug this reason into both the text and the image.
+            </div>
+          </div>
+        </div>
+
+        <div class="question-container" id="senseiRow" style="display:none;">
+          <label for="senseiName" class="field-label">Sensei in the picture (for tour texts)</label>
           <input
-            id="customReason"
+            id="senseiName"
             type="text"
-            placeholder='e.g., "amazing focus today", "being so kind to others"'
+            placeholder='e.g., "Sensei Alex"'
             autocomplete="off"
           />
           <div class="inline-note">
-            If you choose “Custom shout-out” above, we’ll plug this reason into both the text and the image.
+            We’ll use this as: <em>“Sensei Alex had such a fun time with Ethan during their tour today!”</em>
           </div>
         </div>
-      </div>
 
-      <!-- STEP 2: TEXT MESSAGE -->
-      <div class="step-header" style="margin-top:12px;">
-        <div class="step-number">2</div>
-        <div>
-          <h2>Text message preview</h2>
-          <p class="step-description">
-            We’ll auto-include the sender’s name + the $99 membership line here. The image only uses the main shout-out + website line.
-          </p>
+        <div class="actions-row">
+          <button class="btn primary" type="button" id="next1" disabled>
+            Next ▶
+          </button>
         </div>
       </div>
 
-      <div class="question-container">
-        <label for="messageOutput" class="field-label">Message to parent (SMS)</label>
-        <textarea
-          id="messageOutput"
-          placeholder="Click “Generate shout-out” to build your text."
-          readonly
-        ></textarea>
-      </div>
+      <div class="step" id="step2">
+        <div class="step-header" style="margin-top:0;">
+          <div class="step-number">2</div>
+          <div>
+            <h2>Text message preview</h2>
+            <p class="step-description">
+              Generate the text we’ll send to the parent. Birthday adds the $249 1+1 bundle offer; tours add the TOUR promo (no enrollment fee).
+            </p>
+          </div>
+        </div>
 
-      <div class="actions-row">
-        <button class="btn ghost" type="button" id="generateBtn">
-          ✨ Generate shout-out
-        </button>
-        <button class="btn primary" type="button" id="copyBtn">
-          📋 Copy text message
-        </button>
-      </div>
+        <div class="question-container">
+          <label for="messageOutput" class="field-label">Message to parent (SMS)</label>
+          <textarea
+            id="messageOutput"
+            placeholder="Click “Generate shout-out” to build your text."
+            readonly
+          ></textarea>
+        </div>
 
-      <!-- STEP 3: IMAGE OVERLAY -->
-      <div class="step-header" style="margin-top:18px;">
-        <div class="step-number">3</div>
-        <div>
-          <h2>Ninja shout-out picture</h2>
-          <p class="step-description">
-            Upload a photo and we’ll overlay the Ninja Shoutout frame and the core message in the bottom-right corner (plus CodeNinjas.com).
-          </p>
+        <div class="actions-row">
+          <button class="btn ghost" type="button" id="back2">
+            ◀ Back
+          </button>
+          <button class="btn ghost" type="button" id="generateBtn">
+            ✨ Generate shout-out
+          </button>
+          <button class="btn primary" type="button" id="copyBtn">
+            📋 Copy text message
+          </button>
+          <button class="btn" type="button" id="next2" disabled>
+            Next ▶
+          </button>
         </div>
       </div>
 
-      <div class="question-container">
-        <label for="photoInput" class="field-label">Ninja photo</label>
-        <input id="photoInput" type="file" accept="image/*" />
-        <div class="inline-note">
-          Tip: Use a landscape photo if possible. Make sure <strong>ninja-shoutout-frame.png</strong> is in the same folder as this file.
+      <div class="step" id="step3">
+        <div class="step-header" style="margin-top:0;">
+          <div class="step-number">3</div>
+          <div>
+            <h2>Ninja shout-out picture</h2>
+            <p class="step-description">
+            </p>
+          </div>
         </div>
-      </div>
 
-      <div class="canvas-wrap">
-        <div class="canvas-inner">
-          <canvas id="shoutoutCanvas" width="1650" height="1275"></canvas>
-          <div class="actions-row" style="justify-content:flex-start;margin-top:4px;">
-            <button class="btn ghost" type="button" id="renderImageBtn">
-              🖼 Generate shout-out image
-            </button>
-            <button class="btn" type="button" id="downloadImageBtn" disabled>
-              ⬇ Download image
-            </button>
+        <div class="question-container">
+          <label for="photoInput" class="field-label">Ninja photo</label>
+          <input id="photoInput" type="file" accept="image/*" />
+          <div class="inline-note">
+            Tip: Use a landscape photo if possible. Make sure <strong>ninja-shoutout-frame.png</strong> is in the same folder as this file.
+          </div>
+        </div>
+
+        <div class="canvas-wrap">
+          <div class="canvas-inner">
+            <canvas id="shoutoutCanvas" width="1650" height="1275"></canvas>
+            <div class="actions-row" style="justify-content:flex-start;margin-top:4px;">
+              <button class="btn ghost" type="button" id="back3">
+                ◀ Back
+              </button>
+              <button class="btn ghost" type="button" id="renderImageBtn">
+                🖼 Generate shout-out image
+              </button>
+              <button class="btn" type="button" id="downloadImageBtn" disabled>
+                ⬇ Download image
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -541,13 +601,32 @@
   </div>
 
   <script>
-    // ===== TEXT TEMPLATES =====
-    function baseMessage(ninjaName, content, senderName){
+    function baseStandardMessage(ninjaName, content, senderName){
       const sender = (senderName || "Marina").trim();
       return (
         `Hi! This is ${sender} from Code Ninjas Cooper City 🥷💙\n\n` +
         content +
         `\n\nAs a thank-you, if you share the picture we took today on ANY social media platform, you’ll receive $99 off your membership for every person that signs up for a membership because of your post! 🎉`
+      );
+    }
+
+    function baseBirthdayMessage(ninjaName, content, senderName){
+      const sender = (senderName || "Marina").trim();
+      const name = (ninjaName || "").trim();
+      return (
+        `Hi! This is ${sender} from Code Ninjas Cooper City 🥷💙\n\n` +
+        content +
+        `\n\nWe loved celebrating ${name} today! 🎂 As a birthday bonus, we’d love to invite you to our 1+1 CREATE + Clubs bundle for a special discounted rate of $249. Let us know if you’d like more details!`
+      );
+    }
+
+    function baseTourMessage(ninjaName, content, senderName){
+      const sender = (senderName || "Marina").trim();
+      const name = (ninjaName || "").trim();
+      return (
+        `Hi! This is ${sender} from Code Ninjas Cooper City 🥷💙\n\n` +
+        content +
+        `\n\nWe’re so excited to see ${name} back in the dojo! When you’re ready to sign up at CodeNinjas.com, you can use code TOUR for NO enrollment fee for up to two weeks. 🎮`
       );
     }
 
@@ -586,6 +665,11 @@
         (n) => `${n} showed strong leadership and teamwork in the dojo today — encouraging others and working so well with the group! 🧠`,
         (n) => `${n} really stepped up today and demonstrated great leadership skills in class!`,
         (n) => `${n} was a positive leader and role model in the dojo today — we really appreciated their attitude and support of others!`
+      ],
+      birthday: [
+        (n) => `We loved celebrating ${n}’s birthday at the dojo today! 🎂`,
+        (n) => `Happy birthday to ${n}! 🎉 We had such a fun time celebrating with them at Code Ninjas.`,
+        (n) => `${n} had an awesome birthday with us at Code Ninjas today — we loved celebrating with them! 🎂`
       ]
     };
 
@@ -593,7 +677,7 @@
       return arr[Math.floor(Math.random()*arr.length)];
     }
 
-    function buildCoreMessage(name, reason, customReason){
+    function buildCoreMessage(name, reason, customReason, senseiName){
       const trimmedName = (name || "").trim();
       if(!trimmedName) return "";
 
@@ -602,18 +686,33 @@
         return `${trimmedName} earned a special shout-out today for ${detail}! ✨`;
       }
 
+      if(reason === "tour"){
+        const s = (senseiName || "").trim();
+        if(s){
+          return `${s} had such a fun time with ${trimmedName} during their tour today! We loved showing them around the dojo.`;
+        }else{
+          return `${trimmedName} had such a fun tour at the dojo today! We loved meeting them and showing them what Code Ninjas is all about!`;
+        }
+      }
+
       const options = coreTemplates[reason];
       if(!options || !options.length) return "";
       return randomFrom(options)(trimmedName);
     }
 
-    function buildFullSms(name, reason, customReason, senderName){
-      const core = buildCoreMessage(name, reason, customReason);
+    function buildFullSms(name, reason, customReason, senderName, senseiName){
+      const core = buildCoreMessage(name, reason, customReason, senseiName);
       if(!core) return "";
-      return baseMessage(name.trim(), core, senderName);
+
+      if(reason === "birthday"){
+        return baseBirthdayMessage(name.trim(), core, senderName);
+      }
+      if(reason === "tour"){
+        return baseTourMessage(name.trim(), core, senderName);
+      }
+      return baseStandardMessage(name.trim(), core, senderName);
     }
 
-    // ===== BANNERS / CLIPBOARD =====
     function showOk(msg){
       const el = document.getElementById("okBanner");
       el.textContent = msg || "Copied! You can paste this into your text app. 📲";
@@ -644,11 +743,13 @@
       }
     }
 
-    // ===== IMAGE / CANVAS =====
     let userImage = null;
     let frameImage = null;
     let frameLoaded = false;
     let latestCoreMessage = "";
+    let currentReason = "";
+    let currentNinjaName = "";
+
     const canvas = document.getElementById("shoutoutCanvas");
     const ctx = canvas.getContext("2d");
 
@@ -657,7 +758,6 @@
       frameImage.onload = function(){
         frameLoaded = true;
       };
-      // PNG must live next to this HTML file
       frameImage.src = "ninja-shoutout-frame.png";
     }
 
@@ -688,8 +788,14 @@
     }
 
     function renderShoutoutText() {
-      const message = latestCoreMessage;
+      let message = latestCoreMessage;
       if (!message) return;
+
+      if (currentReason === "birthday") {
+        const name = currentNinjaName || "your Ninja";
+        const offerLine = `We loved celebrating ${name} today! 🎂 Special birthday offer: 1+1 CREATE + Clubs bundle for $249 if you sign up within the next two weeks!`;
+        message = message + " " + offerLine;
+      }
 
       const w = canvas.width;
       const h = canvas.height;
@@ -701,7 +807,6 @@
       const maxWidth = 700;
       const lineHeight = 50;
 
-      // wrap text
       const words = message.split(/\s+/);
       let lines = [];
       let line = "";
@@ -719,15 +824,12 @@
 
       const textHeight = lines.length * lineHeight;
 
-      // bottom-right
       const margin = 80;
       const bgWidth = maxWidth + 60;
-      const bgHeight = textHeight + 100; // extra space for website line
+      const bgHeight = textHeight + 100;
 
       const bgX = w - bgWidth - margin;
       const bgY = h - bgHeight - margin;
-
-      // background
       ctx.fillStyle = "rgba(0,0,0,0.45)";
       ctx.beginPath();
       if (ctx.roundRect) ctx.roundRect(bgX, bgY, bgWidth, bgHeight, 25);
@@ -738,13 +840,11 @@
       let textX = bgX + 30;
       let textY = bgY + 20;
 
-      // draw each line
       lines.forEach(l => {
         ctx.fillText(l.trim(), textX, textY);
         textY += lineHeight;
       });
 
-      // Website line
       ctx.font = "28px system-ui, -apple-system, 'Segoe UI', sans-serif";
       ctx.fillStyle = "rgba(255,255,255,0.9)";
       ctx.fillText("Visit CodeNinjas.com to learn more!", textX, textY + 10);
@@ -769,23 +869,21 @@
 
       ctx.clearRect(0,0,w,h);
 
-      // 1) Background photo
       drawCoverImage(userImage, ctx, w, h);
 
-      // 2) Overlay frame PNG
       ctx.drawImage(frameImage, 0, 0, w, h);
 
-      // 3) Text in bottom-right
       renderShoutoutText();
     }
 
-    // ===== MAIN UI HOOKUP =====
     document.addEventListener("DOMContentLoaded", function(){
       loadFrame();
 
       const nameInput = document.getElementById("ninjaName");
       const senderInput = document.getElementById("senderName");
       const customInput = document.getElementById("customReason");
+      const senseiInput = document.getElementById("senseiName");
+      const senseiRow = document.getElementById("senseiRow");
       const output = document.getElementById("messageOutput");
       const generateBtn = document.getElementById("generateBtn");
       const copyBtn = document.getElementById("copyBtn");
@@ -793,6 +891,19 @@
       const photoInput = document.getElementById("photoInput");
       const renderImageBtn = document.getElementById("renderImageBtn");
       const downloadImageBtn = document.getElementById("downloadImageBtn");
+
+      const next1 = document.getElementById("next1");
+      const back2 = document.getElementById("back2");
+      const next2 = document.getElementById("next2");
+      const back3 = document.getElementById("back3");
+
+      let currentStep = 1;
+      function showStep(step){
+        document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+        const el = document.getElementById("step"+step);
+        if(el) el.classList.add("active");
+        currentStep = step;
+      }
 
       function getSelectedReason(){
         const checked = document.querySelector('input[name="reason"]:checked');
@@ -804,6 +915,25 @@
           const input = card.querySelector("input");
           card.classList.toggle("selected", !!(input && input.checked));
         });
+
+        const reason = getSelectedReason();
+        if(reason === "tour"){
+          senseiRow.style.display = "block";
+        }else{
+          senseiRow.style.display = "none";
+        }
+        updateStep1Next();
+      }
+
+      function updateStep1Next(){
+        const hasName = !!nameInput.value.trim();
+        const hasReason = !!getSelectedReason();
+        next1.disabled = !(hasName && hasReason);
+      }
+
+      function updateStep2Next(){
+        const hasText = !!(output.value || "").trim();
+        next2.disabled = !hasText;
       }
 
       optionCards.forEach(card => {
@@ -820,11 +950,30 @@
         i.addEventListener("change", updateSelectionVisuals);
       });
 
+      nameInput.addEventListener("input", updateStep1Next);
+
+      next1.addEventListener("click", () => {
+        showStep(2);
+      });
+
+      back2.addEventListener("click", () => {
+        showStep(1);
+      });
+
+      next2.addEventListener("click", () => {
+        showStep(3);
+      });
+
+      back3.addEventListener("click", () => {
+        showStep(2);
+      });
+
       generateBtn.addEventListener("click", () => {
         const name = nameInput.value;
         const reason = getSelectedReason();
         const custom = customInput.value;
         const senderName = senderInput.value || "Marina";
+        const senseiName = senseiInput.value;
 
         if(!name.trim()){
           showErr("Please enter the Ninja’s name first.");
@@ -833,19 +982,23 @@
         }
         if(!reason){
           showErr("Please choose what you’re shouting them out for.");
+          showStep(1);
           return;
         }
 
-        const core = buildCoreMessage(name, reason, custom);
+        const core = buildCoreMessage(name, reason, custom, senseiName);
         if(!core){
           showErr("Could not generate message. Try again.");
           return;
         }
         latestCoreMessage = core;
+        currentReason = reason;
+        currentNinjaName = (name || "").trim();
 
-        const fullSms = buildFullSms(name, reason, custom, senderName);
+        const fullSms = buildFullSms(name, reason, custom, senderName, senseiName);
         output.value = fullSms;
-        showOk("Shout-out generated! You can tweak the text if needed.");
+        updateStep2Next();
+        showOk("Shout-out generated!");
       });
 
       copyBtn.addEventListener("click", async () => {
@@ -884,6 +1037,10 @@
         link.click();
         document.body.removeChild(link);
       });
+
+      showStep(1);
+      updateStep1Next();
+      updateStep2Next();
     });
   </script>
 </body>
