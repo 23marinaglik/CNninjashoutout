@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ninja Shoutout</title>
+
+  <!-- iPad / iPhone web app meta -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Ninja Shoutout">
+  <!-- Home screen icon (put icon-180.png in same folder) -->
+  <link rel="apple-touch-icon" href="icon-180.png">
+
+  <style>
+    :root{
+      --bg1:#0ea5e9;
+      --bg2:#2563eb;
+      --card:#ffffff;
+      --ink:#0f172a;
+      --muted:#64748b;
+      --brand:#2563eb;
+      --brand-soft:#dbeafe;
+      --border:#e5e7eb;
+      --radius:18px;
+      --shadow:0 14px 40px rgba(15,23,42,.18),0 3px 10px rgba(15,23,42,.10);
+      --ok:#22c55e;
+      --error:#ef4444;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    html,body{
+      min-height:100vh;
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif;
+      color:var(--ink);
+      background:linear-gradient(180deg,var(--bg1),var(--bg2));
+      background-attachment:fixed;
+    }
+
+    body{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:880px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    header{
+      text-align:center;
+      color:#e5edff;
+    }
+    header .brand{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+    header img.logo{
+      height:40px;
+      width:auto;
+      filter:drop-shadow(0 1px 2px rgba(15,23,42,.35));
+    }
+    header h1{
+      margin:10px 0 4px;
+      font-size:clamp(22px,4vw,32px);
+      font-weight:800;
+    }
+    header p{
+      margin:0;
+      font-size:14px;
+      color:#bfdbfe;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:20px 18px 16px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      backdrop-filter:saturate(1.2) blur(4px);
+    }
+
+    .step-header{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .step-number{
+      width:26px;
+      height:26px;
+      border-radius:999px;
+      background:var(--brand-soft);
+      color:var(--brand);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:13px;
+      flex-shrink:0;
+    }
+    .step-header h2{
+      margin:0;
+      font-size:18px;
+      font-weight:800;
+      color:#0f172a;
+    }
+    .step-description{
+      margin:2px 0 0;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .question-container{
+      margin:6px 0 10px;
+    }
+
+    label.field-label{
+      display:block;
+      font-size:13px;
+      font-weight:600;
+      color:#0f172a;
+      margin-bottom:4px;
+    }
+
+    input[type="text"],
+    input[type="file"],
+    textarea{
+      width:100%;
+      padding:11px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      font-size:14px;
+      font-family:inherit;
+      transition:all .18s ease;
+      background:#f8fafc;
+      color:var(--ink);
+    }
+    input[type="text"]:focus,
+    textarea:focus{
+      outline:none;
+      border-color:var(--brand);
+      box-shadow:0 0 0 2px rgba(37,99,235,.14);
+      background:#ffffff;
+    }
+
+    input[type="file"]{
+      padding:8px 10px;
+      background:#f9fafb;
+    }
+
+    textarea{
+      min-height:150px;
+      resize:vertical;
+      line-height:1.5;
+    }
+
+    .options-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:8px;
+      margin-top:4px;
+    }
+
+    .shoutout-option{
+      display:block;
+      border-radius:12px;
+      padding:10px;
+      border:1px solid var(--border);
+      cursor:pointer;
+      transition:all .18s ease;
+      background:#ffffff;
+    }
+
+    .shoutout-option:hover{
+      border-color:var(--brand);
+      box-shadow:0 4px 14px rgba(15,23,42,.06);
+      transform:translateY(-1px);
+    }
+
+    .shoutout-option input{
+      display:none;
+    }
+
+    .shoutout-option.selected{
+      border-color:var(--brand);
+      background:var(--brand-soft);
+    }
+
+    .option-content{
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      font-size:13px;
+      color:#0f172a;
+    }
+    .option-icon{
+      font-size:18px;
+      line-height:1;
+      margin-top:1px;
+    }
+    .option-text{
+      font-weight:500;
+    }
+    .option-sub{
+      font-size:11px;
+      color:#6b7280;
+      margin-top:2px;
+      font-weight:400;
+    }
+
+    .inline-note{
+      font-size:11px;
+      color:#6b7280;
+      padding:6px 8px;
+      border-radius:8px;
+      background:#eff6ff;
+      margin-top:6px;
+    }
+
+    .btn{
+      appearance:none;
+      border-radius:12px;
+      padding:11px 14px;
+      border:1px solid var(--border);
+      background:#f8fafc;
+      font-size:13px;
+      font-weight:700;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+      min-height:40px;
+      white-space:nowrap;
+      transition:all .18s ease;
+    }
+    .btn.primary{
+      background:var(--brand);
+      border-color:var(--brand);
+      color:#ffffff;
+      box-shadow:0 4px 14px rgba(37,99,235,.35);
+    }
+    .btn.ghost{
+      background:#ffffff;
+      color:#0f172a;
+    }
+    .btn:hover:not(:disabled){
+      transform:translateY(-1px);
+      box-shadow:0 6px 18px rgba(15,23,42,.14);
+    }
+    .btn.primary:hover:not(:disabled){
+      background:#1d4ed8;
+      border-color:#1d4ed8;
+    }
+    .btn:disabled{
+      opacity:.5;
+      cursor:not-allowed;
+      box-shadow:none;
+      transform:none;
+    }
+
+    .actions-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:flex-end;
+      margin-top:10px;
+    }
+
+    .banner{
+      display:none;
+      margin-top:10px;
+      padding:9px 10px;
+      border-radius:10px;
+      font-size:12px;
+    }
+    .banner.ok{
+      background:rgba(22,163,74,.08);
+      color:#15803d;
+      border:1px solid rgba(22,163,74,.35);
+    }
+    .banner.error{
+      background:rgba(239,68,68,.06);
+      color:#b91c1c;
+      border:1px solid rgba(239,68,68,.35);
+    }
+
+    .canvas-wrap{
+      margin-top:12px;
+      border-radius:12px;
+      border:1px dashed var(--border);
+      padding:10px;
+      background:#f8fafc;
+    }
+    .canvas-inner{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:flex-start;
+    }
+    canvas{
+      width:100%;
+      max-width:100%;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#020617;
+    }
+
+    @media (max-width:640px){
+      body{
+        padding:12px;
+        align-items:flex-start;
+      }
+      .card{padding:14px;}
+      .actions-row{
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .actions-row .btn{
+        width:100%;
+        justify-content:center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img class="logo" src="https://www.codeninjas.com/hubfs/Group%201.svg" alt="Code Ninjas logo" onerror="this.style.display='none'">
+      </div>
+      <h1>Ninja Shout-Out Builder</h1>
+      <p>Type a Ninja’s name, pick what you’re celebrating, and we’ll auto-build a text message and shout-out graphic.</p>
+    </header>
+
+    <section class="card" aria-live="polite">
+      <!-- STEP 1: DETAILS -->
+      <div class="step-header">
+        <div class="step-number">1</div>
+        <div>
+          <h2>Who are we celebrating today?</h2>
+          <p class="step-description">
+            Fill in the Ninja’s name and choose a shout-out type. Marina + the $99 membership offer are added only to the text message.
+          </p>
+        </div>
+      </div>
+
+      <div class="question-container">
+        <label for="ninjaName" class="field-label">Ninja’s name</label>
+        <input id="ninjaName" type="text" placeholder="e.g., Alex, Sophia, Ethan" autocomplete="off" />
+      </div>
+
+      <div class="question-container">
+        <label class="field-label">What are we shouting them out for?</label>
+        <div class="options-grid" id="shoutoutGrid">
+          <label class="shoutout-option">
+            <input type="radio" name="reason" value="belt">
+            <div class="option-content">
+              <div class="option-icon">🎉</div>
+              <div>
+                <div class="option-text">Belt-up celebration</div>
+                <div class="option-sub">Leveling up their belt in the dojo.</div>
+              </div>
+            </div>
+          </label>
+
+          <label class="shoutout-option">
+            <input type="radio" name="reason" value="project">
+            <div class="option-content">
+              <div class="option-icon">💻</div>
+              <div>
+                <div class="option-text">Cool project</div>
+                <div class="option-sub">Finished something awesome in class.</div>
+              </div>
+            </div>
+          </label>
+
+          <label class="shoutout-option">
+            <input type="radio" name="reason" value="outstanding">
+            <div class="option-content">
+              <div class="option-icon">⭐</div>
+              <div>
+                <div class="option-text">Outstanding student</div>
+                <div class="option-sub">Focus, effort, and all-around rockstar Ninja.</div>
+              </div>
+            </div>
+          </label>
+
+          <label class="shoutout-option">
+            <input type="radio" name="reason" value="behavior">
+            <div class="option-content">
+              <div class="option-icon">😊</div>
+              <div>
+                <div class="option-text">Well-behaved</div>
+                <div class="option-sub">Respectful, kind, and a great example.</div>
+              </div>
+            </div>
+          </label>
+
+          <label class="shoutout-option">
+            <input type="radio" name="reason" value="helper">
+            <div class="option-content">
+              <div class="option-icon">🤝</div>
+              <div>
+                <div class="option-text">Helped another student</div>
+                <div class="option-sub">Showing leadership and teamwork.</div>
+              </div>
+            </div>
+          </label>
+
+          <label class="shoutout-option">
+            <input type="radio" name="reason" value="attendance">
+            <div class="option-content">
+              <div class="option-icon">📅</div>
+              <div>
+                <div class="option-text">Great attendance</div>
+                <div class="option-sub">Showing up consistently to level up.</div>
+              </div>
+            </div>
+          </label>
+
+          <label class="shoutout-option">
+            <input type="radio" name="reason" value="leadership">
+            <div class="option-content">
+              <div class="option-icon">🧠</div>
+              <div>
+                <div class="option-text">Leadership / teamwork</div>
+                <div class="option-sub">Going above and beyond with others.</div>
+              </div>
+            </div>
+          </label>
+
+          <label class="shoutout-option">
+            <input type="radio" name="reason" value="custom">
+            <div class="option-content">
+              <div class="option-icon">✨</div>
+              <div>
+                <div class="option-text">Custom shout-out</div>
+                <div class="option-sub">Use your own wording (focus, kindness, etc.).</div>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <div style="margin-top:8px;">
+          <label for="customReason" class="field-label">If custom, what are we celebrating? (optional)</label>
+          <input
+            id="customReason"
+            type="text"
+            placeholder='e.g., "amazing focus today", "being so kind to others"'
+            autocomplete="off"
+          />
+          <div class="inline-note">
+            If you choose “Custom shout-out” above, we’ll plug this reason into both the text and the image.
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: TEXT MESSAGE -->
+      <div class="step-header" style="margin-top:12px;">
+        <div class="step-number">2</div>
+        <div>
+          <h2>Text message preview</h2>
+          <p class="step-description">
+            We’ll auto-include Marina’s intro + the $99 membership line here. The image only uses the core shout-out.
+          </p>
+        </div>
+      </div>
+
+      <div class="question-container">
+        <label for="messageOutput" class="field-label">Message to parent (SMS)</label>
+        <textarea
+          id="messageOutput"
+          placeholder="Click “Generate shout-out” to build your text."
+          readonly
+        ></textarea>
+      </div>
+
+      <div class="actions-row">
+        <button class="btn ghost" type="button" id="generateBtn">
+          ✨ Generate shout-out
+        </button>
+        <button class="btn primary" type="button" id="copyBtn">
+          📋 Copy text message
+        </button>
+      </div>
+
+      <!-- STEP 3: IMAGE OVERLAY -->
+      <div class="step-header" style="margin-top:18px;">
+        <div class="step-number">3</div>
+        <div>
+          <h2>Ninja shout-out picture</h2>
+          <p class="step-description">
+            Upload a photo and we’ll overlay the Ninja Shoutout frame and the core message (without Marina / $99 text).
+          </p>
+        </div>
+      </div>
+
+      <div class="question-container">
+        <label for="photoInput" class="field-label">Ninja photo</label>
+        <input id="photoInput" type="file" accept="image/*" />
+        <div class="inline-note">
+          Tip: Use a landscape photo if possible. Make sure <strong>ninja-shoutout-frame.png</strong> is in the same folder as this file.
+        </div>
+      </div>
+
+      <div class="canvas-wrap">
+        <div class="canvas-inner">
+          <canvas id="shoutoutCanvas" width="1650" height="1275"></canvas>
+          <div class="actions-row" style="justify-content:flex-start;margin-top:4px;">
+            <button class="btn ghost" type="button" id="renderImageBtn">
+              🖼 Generate shout-out image
+            </button>
+            <button class="btn" type="button" id="downloadImageBtn" disabled>
+              ⬇ Download image
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="okBanner" class="banner ok"></div>
+      <div id="errBanner" class="banner error"></div>
+    </section>
+  </div>
+
+  <script>
+    // ===== TEXT TEMPLATES =====
+    function baseMessage(name, content){
+      return (
+        `Hi! This is Marina from Code Ninjas Cooper City 🥷💙\n\n` +
+        content +
+        `\n\nAs a thank-you, if you share the picture we took today on ANY social media platform, you’ll receive $99 off your membership for every person that signs up for a membership because of your post! 🎉`
+      );
+    }
+
+    const coreTemplates = {
+      belt: [
+        (n) => `${n} leveled up their belt today! 🎉 Their hard work and persistence really paid off in the dojo!`,
+        (n) => `${n} earned a new belt today and we’re SO proud! Their consistency in class is really showing! 🥷`,
+        (n) => `${n} crushed it and ranked up their belt today — amazing progress and effort! ✨`
+      ],
+      project: [
+        (n) => `${n} built a really awesome coding project today! 💻 We were super impressed with their creativity and problem-solving.`,
+        (n) => `${n} completed an impressive project today and showed great focus and persistence from start to finish!`,
+        (n) => `${n} showed strong skills and creativity today with a very cool project in class!`
+      ],
+      outstanding: [
+        (n) => `${n} stood out as an outstanding Ninja today — great focus, effort, and attitude! ⭐`,
+        (n) => `${n} was an exceptional student today, participating, staying engaged, and giving their best effort the whole time!`,
+        (n) => `${n} has been showing incredible progress and consistency in the dojo — we’re really proud of them!`
+      ],
+      behavior: [
+        (n) => `${n} showed excellent behavior today — respectful, focused, and kind to others! 😊`,
+        (n) => `${n} was so well-behaved and set a great example for other Ninjas in the dojo today!`,
+        (n) => `${n} had awesome behavior today and helped keep the dojo a fun, positive space for everyone!`
+      ],
+      helper: [
+        (n) => `${n} helped another student in class today — amazing kindness, patience, and leadership! 🤝`,
+        (n) => `${n} went out of their way to support a fellow Ninja today. We love seeing that teamwork!`,
+        (n) => `${n} showed great leadership and teamwork by helping other students during class today!`
+      ],
+      attendance: [
+        (n) => `${n} has had fantastic attendance lately — that consistency is really helping them grow! 📅`,
+        (n) => `${n} has been so committed to showing up regularly, and we’re seeing great progress because of it!`,
+        (n) => `${n} is progressing quickly thanks to their strong and consistent attendance at Code Ninjas!`
+      ],
+      leadership: [
+        (n) => `${n} showed strong leadership and teamwork in the dojo today — encouraging others and working so well with the group! 🧠`,
+        (n) => `${n} really stepped up today and demonstrated great leadership skills in class!`,
+        (n) => `${n} was a positive leader and role model in the dojo today — we really appreciated their attitude and support of others!`
+      ]
+    };
+
+    function randomFrom(arr){
+      return arr[Math.floor(Math.random()*arr.length)];
+    }
+
+    function buildCoreMessage(name, reason, customReason){
+      const trimmedName = name.trim();
+      if(!trimmedName) return "";
+
+      if(reason === "custom"){
+        const detail = (customReason || "").trim() || "doing something awesome in the dojo today";
+        return `${trimmedName} earned a special shout-out today for ${detail}! ✨`;
+      }
+
+      const options = coreTemplates[reason];
+      if(!options || !options.length) return "";
+      return randomFrom(options)(trimmedName);
+    }
+
+    function buildFullSms(name, reason, customReason){
+      const core = buildCoreMessage(name, reason, customReason);
+      if(!core) return "";
+      return baseMessage(name.trim(), core);
+    }
+
+    // ===== BANNERS / CLIPBOARD =====
+    function showOk(msg){
+      const el = document.getElementById("okBanner");
+      el.textContent = msg || "Copied! You can paste this into your text app. 📲";
+      el.style.display = "block";
+      setTimeout(()=>{ el.style.display = "none"; }, 3500);
+    }
+
+    function showErr(msg){
+      const el = document.getElementById("errBanner");
+      el.textContent = msg || "Something went wrong. Please try again.";
+      el.style.display = "block";
+      setTimeout(()=>{ el.style.display = "none"; }, 4000);
+    }
+
+    async function copyToClipboard(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        return true;
+      }catch(e){
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, ta.value.length);
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return ok;
+      }
+    }
+
+    // ===== IMAGE / CANVAS =====
+    let userImage = null;
+    let frameImage = null;
+    let frameLoaded = false;
+    let latestCoreMessage = "";
+    const canvas = document.getElementById("shoutoutCanvas");
+    const ctx = canvas.getContext("2d");
+
+    function loadFrame(){
+      frameImage = new Image();
+      frameImage.onload = function(){
+        frameLoaded = true;
+      };
+      // PNG must live next to this HTML file
+      frameImage.src = "ninja-shoutout-frame.png";
+    }
+
+    function handlePhotoFile(file){
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e){
+        const img = new Image();
+        img.onload = function(){
+          userImage = img;
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function drawCoverImage(img, ctx, width, height){
+      const iw = img.width;
+      const ih = img.height;
+      if(!iw || !ih) return;
+
+      const scale = Math.max(width/iw, height/ih);
+      const sw = iw*scale;
+      const sh = ih*scale;
+      const sx = (width - sw)/2;
+      const sy = (height - sh)/2;
+      ctx.drawImage(img, sx, sy, sw, sh);
+    }
+
+    function wrapText(ctx, text, x, y, maxWidth, lineHeight){
+      const words = text.split(/\s+/);
+      let line = "";
+      for(let n = 0; n < words.length; n++){
+        const testLine = line + words[n] + " ";
+        const metrics = ctx.measureText(testLine);
+        if(metrics.width > maxWidth && n > 0){
+          ctx.fillText(line, x, y);
+          y += lineHeight;
+          line = words[n] + " ";
+        }else{
+          line = testLine;
+        }
+      }
+      if(line){
+        ctx.fillText(line, x, y);
+      }
+    }
+
+    function renderShoutoutImage(){
+      if(!latestCoreMessage){
+        showErr("Generate a shout-out first so we know what text to place on the image.");
+        return;
+      }
+      if(!userImage){
+        showErr("Please upload a Ninja photo first.");
+        return;
+      }
+      if(!frameLoaded){
+        showErr("Frame image is still loading. Wait a moment and try again.");
+        return;
+      }
+
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.clearRect(0,0,w,h);
+
+      // 1) Background photo
+      drawCoverImage(userImage, ctx, w, h);
+
+      // 2) Overlay frame PNG
+      ctx.drawImage(frameImage, 0, 0, w, h);
+
+      // 3) Text block with core message only
+      const paddingX = 420;
+      const paddingY = 380;
+      const textWidth = w - paddingX - 140;
+      const lineHeight = 52;
+
+      const bgX = paddingX - 30;
+      const bgY = paddingY - 20;
+      const bgWidth = textWidth + 60;
+      const bgHeight = 220;
+
+      ctx.fillStyle = "rgba(0,0,0,0.45)";
+      ctx.beginPath();
+      if(ctx.roundRect){
+        ctx.roundRect(bgX, bgY, bgWidth, bgHeight, 20);
+      }else{
+        ctx.rect(bgX, bgY, bgWidth, bgHeight);
+      }
+      ctx.fill();
+
+      ctx.font = "36px system-ui, -apple-system, 'Segoe UI', sans-serif";
+      ctx.fillStyle = "#ffffff";
+      ctx.textBaseline = "top";
+
+      wrapText(ctx, latestCoreMessage, paddingX, paddingY, textWidth, lineHeight);
+    }
+
+    // ===== MAIN UI HOOKUP =====
+    document.addEventListener("DOMContentLoaded", function(){
+      loadFrame();
+
+      const nameInput = document.getElementById("ninjaName");
+      const customInput = document.getElementById("customReason");
+      const output = document.getElementById("messageOutput");
+      const generateBtn = document.getElementById("generateBtn");
+      const copyBtn = document.getElementById("copyBtn");
+      const optionCards = document.querySelectorAll(".shoutout-option");
+      const photoInput = document.getElementById("photoInput");
+      const renderImageBtn = document.getElementById("renderImageBtn");
+      const downloadImageBtn = document.getElementById("downloadImageBtn");
+
+      function getSelectedReason(){
+        const checked = document.querySelector('input[name="reason"]:checked');
+        return checked ? checked.value : "";
+      }
+
+      function updateSelectionVisuals(){
+        optionCards.forEach(card => {
+          const input = card.querySelector("input");
+          card.classList.toggle("selected", !!(input && input.checked));
+        });
+      }
+
+      optionCards.forEach(card => {
+        card.addEventListener("click", () => {
+          const input = card.querySelector("input");
+          if(input){
+            input.checked = true;
+            updateSelectionVisuals();
+          }
+        });
+      });
+
+      document.querySelectorAll('input[name="reason"]').forEach(i => {
+        i.addEventListener("change", updateSelectionVisuals);
+      });
+
+      generateBtn.addEventListener("click", () => {
+        const name = nameInput.value;
+        const reason = getSelectedReason();
+        const custom = customInput.value;
+
+        if(!name.trim()){
+          showErr("Please enter the Ninja’s name first.");
+          nameInput.focus();
+          return;
+        }
+        if(!reason){
+          showErr("Please choose what you’re shouting them out for.");
+          return;
+        }
+
+        const core = buildCoreMessage(name, reason, custom);
+        if(!core){
+          showErr("Could not generate message. Try again.");
+          return;
+        }
+        latestCoreMessage = core;
+
+        const fullSms = buildFullSms(name, reason, custom);
+        output.value = fullSms;
+        showOk("Shout-out generated! You can tweak the text if needed.");
+      });
+
+      copyBtn.addEventListener("click", async () => {
+        const text = (output.value || "").trim();
+        if(!text){
+          showErr("Generate a shout-out first, then copy it.");
+          return;
+        }
+        const ok = await copyToClipboard(text);
+        if(ok){
+          showOk("Copied! Paste into your text app or CRM. 📲");
+        }else{
+          showErr("Couldn’t copy automatically. Please select and copy manually.");
+        }
+      });
+
+      photoInput.addEventListener("change", (e) => {
+        const file = e.target.files && e.target.files[0];
+        if(file){
+          handlePhotoFile(file);
+          showOk("Photo loaded! Click “Generate shout-out image” to apply the frame.");
+        }
+      });
+
+      renderImageBtn.addEventListener("click", () => {
+        renderShoutoutImage();
+        downloadImageBtn.disabled = false;
+      });
+
+      downloadImageBtn.addEventListener("click", () => {
+        const dataUrl = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = dataUrl;
+        link.download = "ninja-shoutout.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+    });
+  </script>
+</body>
+</html>
