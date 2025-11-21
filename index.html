@@ -4,9 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ninja Shoutout</title>
+
+  <!-- iPad / iPhone web app meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Ninja Shoutout">
+  <!-- Home screen icon (put icon-180.png in same folder) -->
+  <link rel="apple-touch-icon" href="icon-180.png">
 
   <style>
     :root{
@@ -311,6 +315,7 @@
       background:#020617;
     }
 
+    /* Step system */
     .step{
       display:none;
       animation:fade .22s ease;
@@ -351,6 +356,7 @@
     </header>
 
     <section class="card" aria-live="polite">
+      <!-- STEP 1: DETAILS -->
       <div class="step active" id="step1">
         <div class="step-header">
           <div class="step-number">1</div>
@@ -523,6 +529,7 @@
         </div>
       </div>
 
+      <!-- STEP 2: TEXT MESSAGE -->
       <div class="step" id="step2">
         <div class="step-header" style="margin-top:0;">
           <div class="step-number">2</div>
@@ -559,12 +566,15 @@
         </div>
       </div>
 
+      <!-- STEP 3: IMAGE OVERLAY + EMAIL -->
       <div class="step" id="step3">
         <div class="step-header" style="margin-top:0;">
           <div class="step-number">3</div>
           <div>
             <h2>Ninja shout-out picture</h2>
             <p class="step-description">
+              Upload a photo and we’ll overlay the Ninja Shoutout frame and the main shout-out text in the bottom-right corner (plus CodeNinjas.com).
+              For birthdays, the picture text also includes the $249 1+1 CREATE + Clubs offer.
             </p>
           </div>
         </div>
@@ -590,6 +600,9 @@
               <button class="btn" type="button" id="downloadImageBtn" disabled>
                 ⬇ Download image
               </button>
+              <button class="btn primary" type="button" id="emailBtn">
+                ✉️ Email to center
+              </button>
             </div>
           </div>
         </div>
@@ -601,6 +614,7 @@
   </div>
 
   <script>
+    // ===== TEXT TEMPLATES =====
     function baseStandardMessage(ninjaName, content, senderName){
       const sender = (senderName || "Marina").trim();
       return (
@@ -673,6 +687,19 @@
       ]
     };
 
+    const reasonLabels = {
+      belt: "Belt-Up",
+      project: "Cool Project",
+      outstanding: "Outstanding Student",
+      behavior: "Great Behavior",
+      helper: "Helping Another Ninja",
+      attendance: "Great Attendance",
+      leadership: "Leadership & Teamwork",
+      birthday: "Birthday Shoutout",
+      tour: "Tour Follow-up",
+      custom: "Custom Shoutout"
+    };
+
     function randomFrom(arr){
       return arr[Math.floor(Math.random()*arr.length)];
     }
@@ -713,6 +740,7 @@
       return baseStandardMessage(name.trim(), core, senderName);
     }
 
+    // ===== BANNERS / CLIPBOARD =====
     function showOk(msg){
       const el = document.getElementById("okBanner");
       el.textContent = msg || "Copied! You can paste this into your text app. 📲";
@@ -743,12 +771,14 @@
       }
     }
 
+    // ===== IMAGE / CANVAS =====
     let userImage = null;
     let frameImage = null;
     let frameLoaded = false;
     let latestCoreMessage = "";
     let currentReason = "";
     let currentNinjaName = "";
+    let latestImageGenerated = false; // track if image was rendered
 
     const canvas = document.getElementById("shoutoutCanvas");
     const ctx = canvas.getContext("2d");
@@ -758,6 +788,7 @@
       frameImage.onload = function(){
         frameLoaded = true;
       };
+      // PNG must live next to this HTML file
       frameImage.src = "ninja-shoutout-frame.png";
     }
 
@@ -768,6 +799,7 @@
         const img = new Image();
         img.onload = function(){
           userImage = img;
+          latestImageGenerated = false;
         };
         img.src = e.target.result;
       };
@@ -791,9 +823,10 @@
       let message = latestCoreMessage;
       if (!message) return;
 
+      // For birthdays, also put the birthday offer on the image
       if (currentReason === "birthday") {
         const name = currentNinjaName || "your Ninja";
-        const offerLine = `We loved celebrating ${name} today! 🎂 Special birthday offer: 1+1 CREATE + Clubs bundle for $249 if you sign up within the next two weeks!`;
+        const offerLine = `We loved celebrating ${name} today! 🎂 Special birthday offer: 1+1 CREATE + Clubs bundle for $249.`;
         message = message + " " + offerLine;
       }
 
@@ -807,6 +840,7 @@
       const maxWidth = 700;
       const lineHeight = 50;
 
+      // wrap text
       const words = message.split(/\s+/);
       let lines = [];
       let line = "";
@@ -824,12 +858,15 @@
 
       const textHeight = lines.length * lineHeight;
 
+      // bottom-right
       const margin = 80;
       const bgWidth = maxWidth + 60;
-      const bgHeight = textHeight + 100;
+      const bgHeight = textHeight + 100; // extra space for website line
 
       const bgX = w - bgWidth - margin;
       const bgY = h - bgHeight - margin;
+
+      // background
       ctx.fillStyle = "rgba(0,0,0,0.45)";
       ctx.beginPath();
       if (ctx.roundRect) ctx.roundRect(bgX, bgY, bgWidth, bgHeight, 25);
@@ -840,11 +877,13 @@
       let textX = bgX + 30;
       let textY = bgY + 20;
 
+      // draw each line
       lines.forEach(l => {
         ctx.fillText(l.trim(), textX, textY);
         textY += lineHeight;
       });
 
+      // Website line
       ctx.font = "28px system-ui, -apple-system, 'Segoe UI', sans-serif";
       ctx.fillStyle = "rgba(255,255,255,0.9)";
       ctx.fillText("Visit CodeNinjas.com to learn more!", textX, textY + 10);
@@ -869,13 +908,19 @@
 
       ctx.clearRect(0,0,w,h);
 
+      // 1) Background photo
       drawCoverImage(userImage, ctx, w, h);
 
+      // 2) Overlay frame PNG
       ctx.drawImage(frameImage, 0, 0, w, h);
 
+      // 3) Text in bottom-right
       renderShoutoutText();
+
+      latestImageGenerated = true;
     }
 
+    // ===== MAIN UI HOOKUP =====
     document.addEventListener("DOMContentLoaded", function(){
       loadFrame();
 
@@ -887,6 +932,7 @@
       const output = document.getElementById("messageOutput");
       const generateBtn = document.getElementById("generateBtn");
       const copyBtn = document.getElementById("copyBtn");
+      const emailBtn = document.getElementById("emailBtn");
       const optionCards = document.querySelectorAll(".shoutout-option");
       const photoInput = document.getElementById("photoInput");
       const renderImageBtn = document.getElementById("renderImageBtn");
@@ -952,6 +998,7 @@
 
       nameInput.addEventListener("input", updateStep1Next);
 
+      // Step navigation
       next1.addEventListener("click", () => {
         showStep(2);
       });
@@ -968,6 +1015,7 @@
         showStep(2);
       });
 
+      // Generate + copy
       generateBtn.addEventListener("click", () => {
         const name = nameInput.value;
         const reason = getSelectedReason();
@@ -1019,6 +1067,7 @@
         const file = e.target.files && e.target.files[0];
         if(file){
           handlePhotoFile(file);
+          latestImageGenerated = false;
           showOk("Photo loaded! Click “Generate shout-out image” to apply the frame.");
         }
       });
@@ -1036,8 +1085,40 @@
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        showOk("Image downloaded as ninja-shoutout.png. You can attach it to the email.");
       });
 
+      emailBtn.addEventListener("click", () => {
+        const text = (output.value || "").trim();
+        const ninjaName = (nameInput.value || "").trim();
+        const reason = currentReason || getSelectedReason();
+
+        if(!text){
+          showErr("Generate the shout-out text first (Step 2) before emailing.");
+          return;
+        }
+        if(!latestImageGenerated){
+          showErr("Please generate the shout-out image first, then download it so you can attach it to the email.");
+          return;
+        }
+
+        const subjectParts = ["Ninja Shoutout"];
+        if(ninjaName) subjectParts.push(ninjaName);
+        const reasonLabel = reasonLabels[reason] || "";
+        if(reasonLabel) subjectParts.push(reasonLabel);
+        const subject = subjectParts.join(" – ");
+
+        const body =
+          text +
+          "\n\n---\n" +
+          "Please see attached image file (ninja-shoutout.png) for the shout-out picture.\n" +
+          "(Generated with Ninja Shout-Out Builder)";
+
+        const mailto = `mailto:coopercityfl@codeninjas.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailto;
+      });
+
+      // init
       showStep(1);
       updateStep1Next();
       updateStep2Next();
