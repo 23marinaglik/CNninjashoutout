@@ -133,7 +133,8 @@
 
     input[type="text"],
     input[type="file"],
-    textarea{
+    textarea,
+    select{
       width:100%;
       padding:11px 12px;
       border-radius:12px;
@@ -145,7 +146,8 @@
       color:var(--ink);
     }
     input[type="text"]:focus,
-    textarea:focus{
+    textarea:focus,
+    select:focus{
       outline:none;
       border-color:var(--brand);
       box-shadow:0 0 0 2px rgba(37,99,235,.14);
@@ -304,8 +306,11 @@
     .canvas-inner{
       display:flex;
       flex-direction:column;
-      gap:8px;
+      gap:10px;
       align-items:flex-start;
+    }
+    .canvas-row{
+      width:100%;
     }
     canvas{
       width:100%;
@@ -313,6 +318,7 @@
       border-radius:12px;
       border:1px solid var(--border);
       background:#020617;
+      display:block;
     }
 
     /* Step system */
@@ -352,7 +358,7 @@
         <img class="logo" src="https://www.codeninjas.com/hubfs/Group%201.svg" alt="Code Ninjas logo" onerror="this.style.display='none'">
       </div>
       <h1>Ninja Shout-Out Builder</h1>
-      <p>Type a Ninja’s name, pick what you’re celebrating, and we’ll auto-build a text message and shout-out graphic.</p>
+      <p>Type a Ninja’s name, pick what you’re celebrating, and we’ll auto-build a message and two framed shout-out graphics.</p>
     </header>
 
     <section class="card" aria-live="polite">
@@ -374,10 +380,30 @@
         </div>
 
         <div class="question-container">
+          <label for="parentName" class="field-label">Parent name (optional)</label>
+          <input id="parentName" type="text" placeholder="e.g., Emma’s mom, Sarah" autocomplete="off" />
+          <div class="inline-note">
+            We’ll start the message with “Hi [Parent Name],” if you fill this in. Otherwise it will say “Hi there,”.
+          </div>
+        </div>
+
+        <div class="question-container">
+          <label for="pronounSelect" class="field-label">Ninja pronouns</label>
+          <select id="pronounSelect">
+            <option value="they">They / their (default)</option>
+            <option value="he">He / his</option>
+            <option value="she">She / her</option>
+          </select>
+          <div class="inline-note">
+            We’ll use this to say “his belt”, “her project”, or “their progress”.
+          </div>
+        </div>
+
+        <div class="question-container">
           <label for="senderName" class="field-label">Sender name (who is texting?)</label>
           <input id="senderName" type="text" placeholder="e.g., Marina" value="Marina" autocomplete="off" />
           <div class="inline-note">
-            This name will appear in the text as: <em>“Hi! This is &lt;name&gt; from Code Ninjas Cooper City…”</em>
+            This name will appear in the text as: <em>“Hi [Parent Name], This is &lt;name&gt; from Code Ninjas Cooper City…”</em>
           </div>
         </div>
 
@@ -534,18 +560,18 @@
         <div class="step-header" style="margin-top:0;">
           <div class="step-number">2</div>
           <div>
-            <h2>Text message preview</h2>
+            <h2>Message preview</h2>
             <p class="step-description">
-              Generate the text we’ll send to the parent. Birthday adds the $249 1+1 bundle offer; tours add the TOUR promo (no enrollment fee).
+              Generate the warm, parent-friendly message. Birthday adds the $249 1+1 bundle; tours add the TOUR promo (no enrollment fee).
             </p>
           </div>
         </div>
 
         <div class="question-container">
-          <label for="messageOutput" class="field-label">Message to parent (SMS)</label>
+          <label for="messageOutput" class="field-label">Message to parent (SMS or email)</label>
           <textarea
             id="messageOutput"
-            placeholder="Click “Generate shout-out” to build your text."
+            placeholder="Click “Generate shout-out” to build your message."
             readonly
           ></textarea>
         </div>
@@ -558,7 +584,7 @@
             ✨ Generate shout-out
           </button>
           <button class="btn primary" type="button" id="copyBtn">
-            📋 Copy text message
+            📋 Copy message
           </button>
           <button class="btn" type="button" id="next2" disabled>
             Next ▶
@@ -571,10 +597,9 @@
         <div class="step-header" style="margin-top:0;">
           <div class="step-number">3</div>
           <div>
-            <h2>Ninja shout-out picture</h2>
+            <h2>Ninja shout-out pictures</h2>
             <p class="step-description">
-              Upload a photo and we’ll overlay the Ninja Shoutout frame and the main shout-out text in the bottom-right corner (plus CodeNinjas.com).
-              For birthdays, the picture text also includes the $249 1+1 CREATE + Clubs offer.
+              Upload a photo and we’ll overlay <strong>two frames:</strong> the classic landscape Ninja Shoutout frame and the vertical story frame you uploaded.
             </p>
           </div>
         </div>
@@ -583,22 +608,34 @@
           <label for="photoInput" class="field-label">Ninja photo</label>
           <input id="photoInput" type="file" accept="image/*" />
           <div class="inline-note">
-            Tip: Use a landscape photo if possible. Make sure <strong>ninja-shoutout-frame.png</strong> is in the same folder as this file.
+            Make sure <strong>ninja-shoutout-frame.png</strong> (landscape) and <strong>Congratulations! (Your Story).png</strong> (vertical) are in the same folder as this HTML file.
           </div>
         </div>
 
         <div class="canvas-wrap">
           <div class="canvas-inner">
-            <canvas id="shoutoutCanvas" width="1650" height="1275"></canvas>
+            <div class="canvas-row">
+              <label class="field-label">Classic landscape frame (for emails/texts)</label>
+              <canvas id="shoutoutCanvasWide" width="1650" height="1275"></canvas>
+            </div>
+
+            <div class="canvas-row">
+              <label class="field-label">Vertical story frame (for social media stories)</label>
+              <canvas id="shoutoutCanvasStory" width="768" height="1365"></canvas>
+            </div>
+
             <div class="actions-row" style="justify-content:flex-start;margin-top:4px;">
               <button class="btn ghost" type="button" id="back3">
                 ◀ Back
               </button>
               <button class="btn ghost" type="button" id="renderImageBtn">
-                🖼 Generate shout-out image
+                🖼 Generate both images
               </button>
-              <button class="btn" type="button" id="downloadImageBtn" disabled>
-                ⬇ Download image
+              <button class="btn" type="button" id="downloadWideBtn" disabled>
+                ⬇ Download landscape
+              </button>
+              <button class="btn" type="button" id="downloadStoryBtn" disabled>
+                ⬇ Download story
               </button>
               <button class="btn primary" type="button" id="emailBtn">
                 ✉️ Email to center
@@ -614,76 +651,117 @@
   </div>
 
   <script>
-    // ===== TEXT TEMPLATES =====
-    function baseStandardMessage(ninjaName, content, senderName){
+    // ===== PRONOUNS =====
+    function getPronouns(code){
+      let p;
+      if(code === "he"){
+        p = {subj:"he", obj:"him", possAdj:"his", possPron:"his", refl:"himself"};
+      } else if(code === "she"){
+        p = {subj:"she", obj:"her", possAdj:"her", possPron:"hers", refl:"herself"};
+      } else {
+        p = {subj:"they", obj:"them", possAdj:"their", possPron:"theirs", refl:"themselves"};
+      }
+      const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
+      return {
+        ...p,
+        subjCap: capitalize(p.subj),
+        objCap: capitalize(p.obj),
+        possAdjCap: capitalize(p.possAdj)
+      };
+    }
+
+    // ===== TEXT TEMPLATES (SOFTER, EMAIL-LIKE) =====
+    function baseStandardMessage(ninjaName, parentName, core, senderName, pronoun){
       const sender = (senderName || "Marina").trim();
+      const child = (ninjaName || "your Ninja").trim();
+      const parentLine = parentName && parentName.trim()
+        ? `Hi ${parentName.trim()},`
+        : "Hi there,";
+
       return (
-        `Hi! This is ${sender} from Code Ninjas Cooper City 🥷💙\n\n` +
-        content +
-        `\n\nAs a thank-you, if you share the picture we took today on ANY social media platform, you’ll receive $99 off your membership for every person that signs up for a membership because of your post! 🎉`
+        `${parentLine}\n` +
+        `This is ${sender} from Code Ninjas Cooper City.\n\n` +
+        `I just wanted to share how great ${child} was today. ${core}\n\n` +
+        `I grabbed a quick photo of ${child} in the dojo and thought you might like it. If you’d like to share it with friends or family, feel free. 😊\n\n` +
+        `Also, we recently launched our Give $99 / Get $99 referral perk. If you do end up sharing the picture and someone signs up because of your post, you’ll get $99 off a future month and they’ll get $99 off too. 🎉 Totally optional—just a fun way to share ${pronoun.possAdj} progress and save a little.\n\n` +
+        `Thanks for being part of our dojo family! 💙`
       );
     }
 
-    function baseBirthdayMessage(ninjaName, content, senderName){
+    function baseBirthdayMessage(ninjaName, parentName, core, senderName, pronoun){
       const sender = (senderName || "Marina").trim();
-      const name = (ninjaName || "").trim();
+      const child = (ninjaName || "your Ninja").trim();
+      const parentLine = parentName && parentName.trim()
+        ? `Hi ${parentName.trim()},`
+        : "Hi there,";
+
       return (
-        `Hi! This is ${sender} from Code Ninjas Cooper City 🥷💙\n\n` +
-        content +
-        `\n\nWe loved celebrating ${name} today! 🎂 As a birthday bonus, we’d love to invite you to our 1+1 CREATE + Clubs bundle for a special discounted rate of $249. Let us know if you’d like more details!`
+        `${parentLine}\n` +
+        `This is ${sender} from Code Ninjas Cooper City.\n\n` +
+        `We loved celebrating ${child}’s birthday in the dojo today! ${core}\n\n` +
+        `We snapped a quick picture of ${child} in action and thought you might like to have it. Feel free to share it with friends or family if you’d like. 🎂\n\n` +
+        `Since it was ${pronoun.possAdj} special day, we’re also running a birthday special: our 1+1 CREATE + Clubs bundle for a discounted rate of $249. If you’d ever like more details or want to check if it’s a good fit, I’m happy to share.\n\n` +
+        `Thanks for letting us be part of ${child}’s day! 💙`
       );
     }
 
-    function baseTourMessage(ninjaName, content, senderName){
+    function baseTourMessage(ninjaName, parentName, core, senderName, pronoun){
       const sender = (senderName || "Marina").trim();
-      const name = (ninjaName || "").trim();
+      const child = (ninjaName || "your Ninja").trim();
+      const parentLine = parentName && parentName.trim()
+        ? `Hi ${parentName.trim()},`
+        : "Hi there,";
+
       return (
-        `Hi! This is ${sender} from Code Ninjas Cooper City 🥷💙\n\n` +
-        content +
-        `\n\nWe’re so excited to see ${name} back in the dojo! When you’re ready to sign up at CodeNinjas.com, you can use code TOUR for NO enrollment fee for up to two weeks. 🎮`
+        `${parentLine}\n` +
+        `This is ${sender} from Code Ninjas Cooper City.\n\n` +
+        `${core}\n\n` +
+        `We grabbed a quick photo from the tour and thought you might like it. 😊 If you’d like to share it with friends or family, go for it.\n\n` +
+        `Whenever you’re ready to get started, you can sign up at CodeNinjas.com and use code TOUR for no enrollment fee for up to two weeks. No pressure at all—just wanted to pass the option along.\n\n` +
+        `Thanks again for stopping by the dojo! 💙`
       );
     }
 
     const coreTemplates = {
       belt: [
-        (n) => `${n} leveled up their belt today! 🎉 Their hard work and persistence really paid off in the dojo!`,
-        (n) => `${n} earned a new belt today and we’re SO proud! Their consistency in class is really showing! 🥷`,
-        (n) => `${n} crushed it and ranked up their belt today — amazing progress and effort! ✨`
+        (n,p) => `${n} leveled up ${p.possAdj} belt today! ${p.subjCap} worked really hard and it paid off in the dojo. 🙌`,
+        (n,p) => `${n} earned a new belt today and ${p.possAdj} consistency in class is really starting to shine. We were all proud of ${p.obj}!`,
+        (n,p) => `${n} crushed it and ranked up ${p.possAdj} belt today—such a great example of sticking with a challenge.`
       ],
       project: [
-        (n) => `${n} built a really awesome coding project today! 💻 We were super impressed with their creativity and problem-solving.`,
-        (n) => `${n} completed an impressive project today and showed great focus and persistence from start to finish!`,
-        (n) => `${n} showed strong skills and creativity today with a very cool project in class!`
+        (n,p) => `${n} built a really awesome coding project today! 💻 ${p.subjCap} showed a ton of creativity and problem-solving.`,
+        (n,p) => `${n} completed an impressive project today and stayed focused from start to finish.`,
+        (n,p) => `${n} showed strong skills and creativity today with a very cool project in class.`
       ],
       outstanding: [
-        (n) => `${n} stood out as an outstanding Ninja today — great focus, effort, and attitude! ⭐`,
-        (n) => `${n} was an exceptional student today, participating, staying engaged, and giving their best effort the whole time!`,
-        (n) => `${n} has been showing incredible progress and consistency in the dojo — we’re really proud of them!`
+        (n,p) => `${n} stood out as an outstanding Ninja today—great focus, effort, and attitude the whole time. ⭐`,
+        (n,p) => `${n} was an exceptional student today, participating, staying engaged, and giving ${p.possAdj} best effort.`,
+        (n,p) => `${n} has been showing incredible progress and consistency in the dojo lately, and today really showed it.`
       ],
       behavior: [
-        (n) => `${n} showed excellent behavior today — respectful, focused, and kind to others! 😊`,
-        (n) => `${n} was so well-behaved and set a great example for other Ninjas in the dojo today!`,
-        (n) => `${n} had awesome behavior today and helped keep the dojo a fun, positive space for everyone!`
+        (n,p) => `${n} showed excellent behavior today—respectful, focused, and kind to others.`,
+        (n,p) => `${n} was so well-behaved and set a great example for other Ninjas in the dojo today.`,
+        (n,p) => `${n} helped keep the dojo a fun, positive space for everyone with ${p.possAdj} awesome behavior today.`
       ],
       helper: [
-        (n) => `${n} helped another student in class today — amazing kindness, patience, and leadership! 🤝`,
-        (n) => `${n} went out of their way to support a fellow Ninja today. We love seeing that teamwork!`,
-        (n) => `${n} showed great leadership and teamwork by helping other students during class today!`
+        (n,p) => `${n} helped another student in class today—such a kind and thoughtful moment of leadership. 🤝`,
+        (n,p) => `${n} went out of ${p.possAdj} way to support a fellow Ninja today, which really stood out to our team.`,
+        (n,p) => `${n} showed great leadership and teamwork by helping other students during class today.`
       ],
       attendance: [
-        (n) => `${n} has had fantastic attendance lately — that consistency is really helping them grow! 📅`,
-        (n) => `${n} has been so committed to showing up regularly, and we’re seeing great progress because of it!`,
-        (n) => `${n} is progressing quickly thanks to their strong and consistent attendance at Code Ninjas!`
+        (n,p) => `${n} has had fantastic attendance lately, and that consistency is really helping ${p.obj} grow.`,
+        (n,p) => `${n} has been so committed to showing up regularly, and we’re seeing great progress because of it.`,
+        (n,p) => `${n} is progressing quickly thanks to ${p.possAdj} strong and consistent attendance at Code Ninjas.`
       ],
       leadership: [
-        (n) => `${n} showed strong leadership and teamwork in the dojo today — encouraging others and working so well with the group! 🧠`,
-        (n) => `${n} really stepped up today and demonstrated great leadership skills in class!`,
-        (n) => `${n} was a positive leader and role model in the dojo today — we really appreciated their attitude and support of others!`
+        (n,p) => `${n} showed strong leadership and teamwork in the dojo today—encouraging others and working really well with the group. 🧠`,
+        (n,p) => `${n} stepped up and demonstrated great leadership skills in class today.`,
+        (n,p) => `${n} was a positive leader and role model in the dojo today, and we really appreciated ${p.possAdj} attitude and support of others.`
       ],
       birthday: [
-        (n) => `We loved celebrating ${n}’s birthday at the dojo today! 🎂`,
-        (n) => `Happy birthday to ${n}! 🎉 We had such a fun time celebrating with them at Code Ninjas.`,
-        (n) => `${n} had an awesome birthday with us at Code Ninjas today — we loved celebrating with them! 🎂`
+        (n,p) => `${n} had such a fun birthday at the dojo today—we loved celebrating with ${p.obj}! 🎉`,
+        (n,p) => `We had a great time celebrating ${n}’s birthday at Code Ninjas today.`,
+        (n,p) => `${n} brought such great energy to ${p.possAdj} birthday visit today and made the dojo feel extra festive. 🎂`
       ]
     };
 
@@ -704,40 +782,40 @@
       return arr[Math.floor(Math.random()*arr.length)];
     }
 
-    function buildCoreMessage(name, reason, customReason, senseiName){
+    function buildCoreMessage(name, reason, customReason, senseiName, pronoun){
       const trimmedName = (name || "").trim();
       if(!trimmedName) return "";
 
       if(reason === "custom"){
         const detail = (customReason || "").trim() || "doing something awesome in the dojo today";
-        return `${trimmedName} earned a special shout-out today for ${detail}! ✨`;
+        return `${trimmedName} earned a special shout-out today for ${detail}. ✨`;
       }
 
       if(reason === "tour"){
         const s = (senseiName || "").trim();
         if(s){
-          return `${s} had such a fun time with ${trimmedName} during their tour today! We loved showing them around the dojo.`;
+          return `${s} had such a fun time with ${trimmedName} during their tour today. We loved showing ${pronoun.obj} around the dojo and talking about how everything works.`;
         }else{
-          return `${trimmedName} had such a fun tour at the dojo today! We loved meeting them and showing them what Code Ninjas is all about!`;
+          return `${trimmedName} had a really fun tour at the dojo today. We loved meeting ${pronoun.obj} and showing what Code Ninjas is all about.`;
         }
       }
 
       const options = coreTemplates[reason];
       if(!options || !options.length) return "";
-      return randomFrom(options)(trimmedName);
+      return randomFrom(options)(trimmedName, pronoun);
     }
 
-    function buildFullSms(name, reason, customReason, senderName, senseiName){
-      const core = buildCoreMessage(name, reason, customReason, senseiName);
+    function buildFullMessage(name, reason, customReason, senderName, senseiName, parentName, pronoun){
+      const core = buildCoreMessage(name, reason, customReason, senseiName, pronoun);
       if(!core) return "";
 
       if(reason === "birthday"){
-        return baseBirthdayMessage(name.trim(), core, senderName);
+        return baseBirthdayMessage(name, parentName, core, senderName, pronoun);
       }
       if(reason === "tour"){
-        return baseTourMessage(name.trim(), core, senderName);
+        return baseTourMessage(name, parentName, core, senderName, pronoun);
       }
-      return baseStandardMessage(name.trim(), core, senderName);
+      return baseStandardMessage(name, parentName, core, senderName, pronoun);
     }
 
     // ===== BANNERS / CLIPBOARD =====
@@ -771,25 +849,33 @@
       }
     }
 
-    // ===== IMAGE / CANVAS =====
+    // ===== IMAGE / CANVAS (TWO FRAMES) =====
     let userImage = null;
-    let frameImage = null;
-    let frameLoaded = false;
+
+    let frameWideImage = null;
+    let frameStoryImage = null;
+    let frameWideLoaded = false;
+    let frameStoryLoaded = false;
+
     let latestCoreMessage = "";
     let currentReason = "";
     let currentNinjaName = "";
-    let latestImageGenerated = false; // track if image was rendered
+    let latestImageGenerated = false; // both frames rendered
 
-    const canvas = document.getElementById("shoutoutCanvas");
-    const ctx = canvas.getContext("2d");
+    const canvasWide = document.getElementById("shoutoutCanvasWide");
+    const ctxWide = canvasWide.getContext("2d");
 
-    function loadFrame(){
-      frameImage = new Image();
-      frameImage.onload = function(){
-        frameLoaded = true;
-      };
-      // PNG must live next to this HTML file
-      frameImage.src = "ninja-shoutout-frame.png";
+    const canvasStory = document.getElementById("shoutoutCanvasStory");
+    const ctxStory = canvasStory.getContext("2d");
+
+    function loadFrames(){
+      frameWideImage = new Image();
+      frameWideImage.onload = () => { frameWideLoaded = true; };
+      frameWideImage.src = "ninja-shoutout-frame.png";
+
+      frameStoryImage = new Image();
+      frameStoryImage.onload = () => { frameStoryLoaded = true; };
+      frameStoryImage.src = "Congratulations! (Your Story).png";
     }
 
     function handlePhotoFile(file){
@@ -819,28 +905,23 @@
       ctx.drawImage(img, sx, sy, sw, sh);
     }
 
-    function renderShoutoutText() {
+    function renderShoutoutText(ctx, width, height){
       let message = latestCoreMessage;
       if (!message) return;
 
-      // For birthdays, also put the birthday offer on the image
       if (currentReason === "birthday") {
         const name = currentNinjaName || "your Ninja";
-        const offerLine = `We loved celebrating ${name} today! 🎂 Special birthday offer: 1+1 CREATE + Clubs bundle for $249.`;
+        const offerLine = `We loved celebrating ${name} today! 1+1 CREATE + Clubs bundle for $249.`;
         message = message + " " + offerLine;
       }
 
-      const w = canvas.width;
-      const h = canvas.height;
+      const maxWidth = Math.min(width - 120, 700);
+      const lineHeight = Math.round(width * 0.06);
 
-      ctx.font = "36px system-ui, -apple-system, 'Segoe UI', sans-serif";
+      ctx.font = `${Math.round(width * 0.045)}px system-ui, -apple-system, 'Segoe UI', sans-serif`;
       ctx.fillStyle = "#ffffff";
       ctx.textBaseline = "top";
 
-      const maxWidth = 700;
-      const lineHeight = 50;
-
-      // wrap text
       const words = message.split(/\s+/);
       let lines = [];
       let line = "";
@@ -857,16 +938,13 @@
       if (line) lines.push(line);
 
       const textHeight = lines.length * lineHeight;
-
-      // bottom-right
-      const margin = 80;
+      const margin = Math.round(width * 0.08);
       const bgWidth = maxWidth + 60;
-      const bgHeight = textHeight + 100; // extra space for website line
+      const bgHeight = textHeight + lineHeight * 1.8;
 
-      const bgX = w - bgWidth - margin;
-      const bgY = h - bgHeight - margin;
+      const bgX = width - bgWidth - margin;
+      const bgY = height - bgHeight - margin;
 
-      // background
       ctx.fillStyle = "rgba(0,0,0,0.45)";
       ctx.beginPath();
       if (ctx.roundRect) ctx.roundRect(bgX, bgY, bgWidth, bgHeight, 25);
@@ -877,54 +955,54 @@
       let textX = bgX + 30;
       let textY = bgY + 20;
 
-      // draw each line
       lines.forEach(l => {
         ctx.fillText(l.trim(), textX, textY);
         textY += lineHeight;
       });
 
-      // Website line
-      ctx.font = "28px system-ui, -apple-system, 'Segoe UI', sans-serif";
+      ctx.font = `${Math.round(width * 0.038)}px system-ui, -apple-system, 'Segoe UI', sans-serif`;
       ctx.fillStyle = "rgba(255,255,255,0.9)";
-      ctx.fillText("Visit CodeNinjas.com to learn more!", textX, textY + 10);
+      ctx.fillText("Visit CodeNinjas.com to learn more!", textX, textY + 6);
     }
 
-    function renderShoutoutImage(){
+    function renderShoutoutImages(){
       if(!latestCoreMessage){
-        showErr("Generate a shout-out first so we know what text to place on the image.");
+        showErr("Generate a shout-out first so we know what text to place on the images.");
         return;
       }
       if(!userImage){
         showErr("Please upload a Ninja photo first.");
         return;
       }
-      if(!frameLoaded){
-        showErr("Frame image is still loading. Wait a moment and try again.");
+      if(!frameWideLoaded || !frameStoryLoaded){
+        showErr("Frame images are still loading. Wait a moment and try again.");
         return;
       }
 
-      const w = canvas.width;
-      const h = canvas.height;
+      const ww = canvasWide.width;
+      const wh = canvasWide.height;
+      ctxWide.clearRect(0,0,ww,wh);
+      drawCoverImage(userImage, ctxWide, ww, wh);
+      ctxWide.drawImage(frameWideImage, 0, 0, ww, wh);
+      renderShoutoutText(ctxWide, ww, wh);
 
-      ctx.clearRect(0,0,w,h);
-
-      // 1) Background photo
-      drawCoverImage(userImage, ctx, w, h);
-
-      // 2) Overlay frame PNG
-      ctx.drawImage(frameImage, 0, 0, w, h);
-
-      // 3) Text in bottom-right
-      renderShoutoutText();
+      const sw = canvasStory.width;
+      const sh = canvasStory.height;
+      ctxStory.clearRect(0,0,sw,sh);
+      drawCoverImage(userImage, ctxStory, sw, sh);
+      ctxStory.drawImage(frameStoryImage, 0, 0, sw, sh);
+      renderShoutoutText(ctxStory, sw, sh);
 
       latestImageGenerated = true;
     }
 
     // ===== MAIN UI HOOKUP =====
     document.addEventListener("DOMContentLoaded", function(){
-      loadFrame();
+      loadFrames();
 
       const nameInput = document.getElementById("ninjaName");
+      const parentInput = document.getElementById("parentName");
+      const pronounSelect = document.getElementById("pronounSelect");
       const senderInput = document.getElementById("senderName");
       const customInput = document.getElementById("customReason");
       const senseiInput = document.getElementById("senseiName");
@@ -936,7 +1014,8 @@
       const optionCards = document.querySelectorAll(".shoutout-option");
       const photoInput = document.getElementById("photoInput");
       const renderImageBtn = document.getElementById("renderImageBtn");
-      const downloadImageBtn = document.getElementById("downloadImageBtn");
+      const downloadWideBtn = document.getElementById("downloadWideBtn");
+      const downloadStoryBtn = document.getElementById("downloadStoryBtn");
 
       const next1 = document.getElementById("next1");
       const back2 = document.getElementById("back2");
@@ -1018,10 +1097,13 @@
       // Generate + copy
       generateBtn.addEventListener("click", () => {
         const name = nameInput.value;
+        const parentName = parentInput.value;
         const reason = getSelectedReason();
         const custom = customInput.value;
         const senderName = senderInput.value || "Marina";
         const senseiName = senseiInput.value;
+        const pronounCode = pronounSelect.value;
+        const pronoun = getPronouns(pronounCode);
 
         if(!name.trim()){
           showErr("Please enter the Ninja’s name first.");
@@ -1034,7 +1116,7 @@
           return;
         }
 
-        const core = buildCoreMessage(name, reason, custom, senseiName);
+        const core = buildCoreMessage(name, reason, custom, senseiName, pronoun);
         if(!core){
           showErr("Could not generate message. Try again.");
           return;
@@ -1043,8 +1125,8 @@
         currentReason = reason;
         currentNinjaName = (name || "").trim();
 
-        const fullSms = buildFullSms(name, reason, custom, senderName, senseiName);
-        output.value = fullSms;
+        const fullMessage = buildFullMessage(name, reason, custom, senderName, senseiName, parentName, pronoun);
+        output.value = fullMessage;
         updateStep2Next();
         showOk("Shout-out generated!");
       });
@@ -1057,7 +1139,7 @@
         }
         const ok = await copyToClipboard(text);
         if(ok){
-          showOk("Copied! Paste into your text app or CRM. 📲");
+          showOk("Copied! Paste into your text app or email. 📲");
         }else{
           showErr("Couldn’t copy automatically. Please select and copy manually.");
         }
@@ -1068,24 +1150,36 @@
         if(file){
           handlePhotoFile(file);
           latestImageGenerated = false;
-          showOk("Photo loaded! Click “Generate shout-out image” to apply the frame.");
+          showOk("Photo loaded! Click “Generate both images” to apply the frames.");
         }
       });
 
       renderImageBtn.addEventListener("click", () => {
-        renderShoutoutImage();
-        downloadImageBtn.disabled = false;
+        renderShoutoutImages();
+        downloadWideBtn.disabled = false;
+        downloadStoryBtn.disabled = false;
       });
 
-      downloadImageBtn.addEventListener("click", () => {
-        const dataUrl = canvas.toDataURL("image/png");
+      downloadWideBtn.addEventListener("click", () => {
+        const dataUrl = canvasWide.toDataURL("image/png");
         const link = document.createElement("a");
         link.href = dataUrl;
-        link.download = "ninja-shoutout.png";
+        link.download = "ninja-shoutout-landscape.png";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        showOk("Image downloaded as ninja-shoutout.png. You can attach it to the email.");
+        showOk("Landscape image downloaded. You can attach it to your email or text.");
+      });
+
+      downloadStoryBtn.addEventListener("click", () => {
+        const dataUrl = canvasStory.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = dataUrl;
+        link.download = "ninja-shoutout-story.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showOk("Story image downloaded. Perfect for social media stories!");
       });
 
       emailBtn.addEventListener("click", () => {
@@ -1098,7 +1192,7 @@
           return;
         }
         if(!latestImageGenerated){
-          showErr("Please generate the shout-out image first, then download it so you can attach it to the email.");
+          showErr("Please generate the images first, then download them so you can attach them to the email.");
           return;
         }
 
@@ -1111,7 +1205,7 @@
         const body =
           text +
           "\n\n---\n" +
-          "Please see attached image file (ninja-shoutout.png) for the shout-out picture.\n" +
+          "Please see attached image files (ninja-shoutout-landscape.png and/or ninja-shoutout-story.png) for the shout-out pictures.\n" +
           "(Generated with Ninja Shout-Out Builder)";
 
         const mailto = `mailto:coopercityfl@codeninjas.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -1126,3 +1220,4 @@
   </script>
 </body>
 </html>
+
