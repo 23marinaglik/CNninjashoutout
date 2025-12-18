@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -321,6 +321,26 @@
       display:block;
     }
 
+    .photo-controls{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:8px;
+      margin-top:4px;
+    }
+    .slider-field{
+      font-size:11px;
+      color:#374151;
+    }
+    .slider-field label{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:2px;
+      font-weight:600;
+    }
+    .slider-field input[type="range"]{
+      width:100%;
+    }
+
     /* Step system */
     .step{
       display:none;
@@ -612,6 +632,31 @@
           </div>
         </div>
 
+        <!-- Zoom & pan controls -->
+        <div class="photo-controls">
+          <div class="slider-field">
+            <label for="zoomSlider">
+              <span>Zoom</span>
+              <span id="zoomLabel">1.0×</span>
+            </label>
+            <input id="zoomSlider" type="range" min="0.6" max="2.0" step="0.02" value="1.0" />
+          </div>
+          <div class="slider-field">
+            <label for="panXSlider">
+              <span>Horizontal</span>
+              <span id="panXLabel">0</span>
+            </label>
+            <input id="panXSlider" type="range" min="-100" max="100" step="1" value="0" />
+          </div>
+          <div class="slider-field">
+            <label for="panYSlider">
+              <span>Vertical</span>
+              <span id="panYLabel">0</span>
+            </label>
+            <input id="panYSlider" type="range" min="-100" max="100" step="1" value="0" />
+          </div>
+        </div>
+
         <div class="canvas-wrap">
           <div class="canvas-inner">
             <div class="canvas-row">
@@ -705,7 +750,7 @@
       );
     }
 
-    function baseTourMessage(ninjaName, parentName, core, senderName, pronoun){
+    function baseTourMessage(ninjaName, parentName, core, senderName){
       const sender = (senderName || "Marina").trim();
       const child = (ninjaName || "your Ninja").trim();
       const parentLine = parentName && parentName.trim()
@@ -794,9 +839,9 @@
       if(reason === "tour"){
         const s = (senseiName || "").trim();
         if(s){
-          return `${s} had such a fun time with ${trimmedName} during their tour today. We loved showing ${pronoun.obj} around the dojo and talking about how everything works.`;
+          return `${s} had such a fun time with ${trimmedName} during their tour today. We loved showing them around the dojo and talking about how everything works.`;
         }else{
-          return `${trimmedName} had a really fun tour at the dojo today. We loved meeting ${pronoun.obj} and showing what Code Ninjas is all about.`;
+          return `${trimmedName} had a really fun tour at the dojo today. We loved meeting them and showing what Code Ninjas is all about.`;
         }
       }
 
@@ -849,7 +894,7 @@
       }
     }
 
-    // ===== IMAGE / CANVAS (TWO FRAMES) =====
+    // ===== IMAGE / CANVAS (TWO FRAMES + ZOOM/PAN) =====
     let userImage = null;
 
     let frameWideImage = null;
@@ -892,20 +937,31 @@
       reader.readAsDataURL(file);
     }
 
-    function drawCoverImage(img, ctx, width, height){
+    function drawCoverImage(img, ctx, width, height, zoomFactor, panX, panY){
       const iw = img.width;
       const ih = img.height;
       if(!iw || !ih) return;
 
-      const scale = Math.max(width/iw, height/ih);
+      const baseScale = Math.max(width/iw, height/ih);
+      const scale = baseScale * zoomFactor;
+
       const sw = iw*scale;
       const sh = ih*scale;
-      const sx = (width - sw)/2;
-      const sy = (height - sh)/2;
+
+      // Allow up to ~30% shift of canvas size
+      const maxShiftX = width*0.3;
+      const maxShiftY = height*0.3;
+
+      const shiftX = (panX/100)*maxShiftX;
+      const shiftY = (panY/100)*maxShiftY;
+
+      const sx = (width - sw)/2 + shiftX;
+      const sy = (height - sh)/2 + shiftY;
+
       ctx.drawImage(img, sx, sy, sw, sh);
     }
 
-    function renderShoutoutText(ctx, width, height){
+    function renderShoutoutText(ctx, width, height, mode){
       let message = latestCoreMessage;
       if (!message) return;
 
@@ -915,10 +971,24 @@
         message = message + " " + offerLine;
       }
 
-      const maxWidth = Math.min(width - 120, 700);
-      const lineHeight = Math.round(width * 0.06);
+      let maxWidth, fontSize, lineHeight, marginX, marginY, bgX, bgY, bgWidth, bgHeight;
 
-      ctx.font = `${Math.round(width * 0.045)}px system-ui, -apple-system, 'Segoe UI', sans-serif`;
+      if(mode === "wide"){
+        maxWidth  = width * 0.38;
+        fontSize  = Math.round(width * 0.028); // ~46 on 1650
+        lineHeight = Math.round(fontSize * 1.25);
+        marginX   = width * 0.06;
+        marginY   = height * 0.08;
+      }else{
+        // story
+        maxWidth  = width * 0.85;
+        fontSize  = Math.round(width * 0.04);  // ~30 on 768
+        lineHeight = Math.round(fontSize * 1.3);
+        marginX   = width * 0.05;
+        marginY   = height * 0.05;
+      }
+
+      ctx.font = `${fontSize}px system-ui, -apple-system, 'Segoe UI', sans-serif`;
       ctx.fillStyle = "#ffffff";
       ctx.textBaseline = "top";
 
@@ -938,12 +1008,15 @@
       if (line) lines.push(line);
 
       const textHeight = lines.length * lineHeight;
-      const margin = Math.round(width * 0.08);
-      const bgWidth = maxWidth + 60;
-      const bgHeight = textHeight + lineHeight * 1.8;
+      bgWidth = maxWidth + 40;
+      bgHeight = textHeight + lineHeight * 1.8;
 
-      const bgX = width - bgWidth - margin;
-      const bgY = height - bgHeight - margin;
+      if(mode === "wide"){
+        bgX = width - bgWidth - marginX;
+      }else{
+        bgX = (width - bgWidth)/2;
+      }
+      bgY = height - bgHeight - marginY;
 
       ctx.fillStyle = "rgba(0,0,0,0.45)";
       ctx.beginPath();
@@ -952,15 +1025,15 @@
       ctx.fill();
 
       ctx.fillStyle = "#ffffff";
-      let textX = bgX + 30;
-      let textY = bgY + 20;
+      let textX = bgX + 20;
+      let textY = bgY + 16;
 
       lines.forEach(l => {
         ctx.fillText(l.trim(), textX, textY);
         textY += lineHeight;
       });
 
-      ctx.font = `${Math.round(width * 0.038)}px system-ui, -apple-system, 'Segoe UI', sans-serif`;
+      ctx.font = `${Math.round(fontSize * 0.9)}px system-ui, -apple-system, 'Segoe UI', sans-serif`;
       ctx.fillStyle = "rgba(255,255,255,0.9)";
       ctx.fillText("Visit CodeNinjas.com to learn more!", textX, textY + 6);
     }
@@ -979,19 +1052,27 @@
         return;
       }
 
+      const zoomSlider = document.getElementById("zoomSlider");
+      const panXSlider = document.getElementById("panXSlider");
+      const panYSlider = document.getElementById("panYSlider");
+
+      const zoom = parseFloat(zoomSlider.value || "1");
+      const panX = parseFloat(panXSlider.value || "0");
+      const panY = parseFloat(panYSlider.value || "0");
+
       const ww = canvasWide.width;
       const wh = canvasWide.height;
       ctxWide.clearRect(0,0,ww,wh);
-      drawCoverImage(userImage, ctxWide, ww, wh);
+      drawCoverImage(userImage, ctxWide, ww, wh, zoom, panX, panY);
       ctxWide.drawImage(frameWideImage, 0, 0, ww, wh);
-      renderShoutoutText(ctxWide, ww, wh);
+      renderShoutoutText(ctxWide, ww, wh, "wide");
 
       const sw = canvasStory.width;
       const sh = canvasStory.height;
       ctxStory.clearRect(0,0,sw,sh);
-      drawCoverImage(userImage, ctxStory, sw, sh);
+      drawCoverImage(userImage, ctxStory, sw, sh, zoom, panX, panY);
       ctxStory.drawImage(frameStoryImage, 0, 0, sw, sh);
-      renderShoutoutText(ctxStory, sw, sh);
+      renderShoutoutText(ctxStory, sw, sh, "story");
 
       latestImageGenerated = true;
     }
@@ -1016,6 +1097,13 @@
       const renderImageBtn = document.getElementById("renderImageBtn");
       const downloadWideBtn = document.getElementById("downloadWideBtn");
       const downloadStoryBtn = document.getElementById("downloadStoryBtn");
+
+      const zoomSlider = document.getElementById("zoomSlider");
+      const panXSlider = document.getElementById("panXSlider");
+      const panYSlider = document.getElementById("panYSlider");
+      const zoomLabel = document.getElementById("zoomLabel");
+      const panXLabel = document.getElementById("panXLabel");
+      const panYLabel = document.getElementById("panYLabel");
 
       const next1 = document.getElementById("next1");
       const back2 = document.getElementById("back2");
@@ -1150,9 +1238,27 @@
         if(file){
           handlePhotoFile(file);
           latestImageGenerated = false;
-          showOk("Photo loaded! Click “Generate both images” to apply the frames.");
+          showOk("Photo loaded! Use the sliders, then click “Generate both images”.");
         }
       });
+
+      // Slider labels + live re-render when adjusted
+      function refreshSliderLabels(){
+        zoomLabel.textContent = `${parseFloat(zoomSlider.value).toFixed(2)}×`;
+        panXLabel.textContent = panXSlider.value;
+        panYLabel.textContent = panYSlider.value;
+      }
+      [zoomSlider, panXSlider, panYSlider].forEach(sl => {
+        sl.addEventListener("input", () => {
+          refreshSliderLabels();
+          if(userImage && latestCoreMessage){
+            renderShoutoutImages();
+            downloadWideBtn.disabled = false;
+            downloadStoryBtn.disabled = false;
+          }
+        });
+      });
+      refreshSliderLabels();
 
       renderImageBtn.addEventListener("click", () => {
         renderShoutoutImages();
@@ -1220,4 +1326,3 @@
   </script>
 </body>
 </html>
-
