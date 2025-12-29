@@ -87,7 +87,6 @@
       backdrop-filter:saturate(1.2) blur(4px);
     }
 
-    /* New: iPad-friendly stepper */
     .stepper{
       display:flex;
       align-items:center;
@@ -147,9 +146,7 @@
       color:var(--muted);
     }
 
-    .question-container{
-      margin:8px 0 12px;
-    }
+    .question-container{ margin:8px 0 12px; }
 
     label.field-label{
       display:block;
@@ -167,7 +164,7 @@
       padding:12px 12px;
       border-radius:12px;
       border:1px solid var(--border);
-      font-size:15px; /* iPad-friendly */
+      font-size:15px;
       font-family:inherit;
       transition:all .18s ease;
       background:#f8fafc;
@@ -181,11 +178,7 @@
       box-shadow:0 0 0 2px rgba(37,99,235,.14);
       background:#ffffff;
     }
-
-    input[type="file"]{
-      padding:10px 10px;
-      background:#f9fafb;
-    }
+    input[type="file"]{ padding:10px 10px; background:#f9fafb; }
 
     textarea{
       min-height:170px;
@@ -212,15 +205,12 @@
       user-select:none;
       -webkit-tap-highlight-color: transparent;
     }
-
     .shoutout-option:hover{
       border-color:var(--brand);
       box-shadow:0 6px 18px rgba(15,23,42,.08);
       transform:translateY(-1px);
     }
-
     .shoutout-option input{ display:none; }
-
     .shoutout-option.selected{
       border-color:var(--brand);
       background:var(--brand-soft);
@@ -233,20 +223,9 @@
       font-size:14px;
       color:#0f172a;
     }
-    .option-icon{
-      font-size:20px;
-      line-height:1;
-      margin-top:1px;
-    }
-    .option-text{
-      font-weight:800;
-    }
-    .option-sub{
-      font-size:12px;
-      color:#6b7280;
-      margin-top:3px;
-      font-weight:500;
-    }
+    .option-icon{ font-size:20px; line-height:1; margin-top:1px; }
+    .option-text{ font-weight:800; }
+    .option-sub{ font-size:12px; color:#6b7280; margin-top:3px; font-weight:500; }
 
     .inline-note{
       font-size:12px;
@@ -270,7 +249,7 @@
       align-items:center;
       justify-content:center;
       gap:6px;
-      min-height:46px; /* iPad tap target */
+      min-height:46px;
       white-space:nowrap;
       transition:all .18s ease;
       -webkit-tap-highlight-color: transparent;
@@ -281,10 +260,7 @@
       color:#ffffff;
       box-shadow:0 6px 18px rgba(37,99,235,.30);
     }
-    .btn.ghost{
-      background:#ffffff;
-      color:#0f172a;
-    }
+    .btn.ghost{ background:#ffffff; color:#0f172a; }
     .btn:hover:not(:disabled){
       transform:translateY(-1px);
       box-shadow:0 8px 22px rgba(15,23,42,.14);
@@ -377,11 +353,8 @@
       margin-bottom:4px;
       font-weight:800;
     }
-    .slider-field input[type="range"]{
-      width:100%;
-    }
+    .slider-field input[type="range"]{ width:100%; }
 
-    /* Step system */
     .step{
       display:none;
       animation:fade .22s ease;
@@ -392,22 +365,12 @@
       to{opacity:1;transform:translateY(0);}
     }
 
-    /* iPad: keep buttons full width-ish on small screens */
     @media (max-width:720px){
-      .actions-row{
-        flex-direction:column;
-        align-items:stretch;
-      }
-      .actions-row .right{
-        width:100%;
-        justify-content:stretch;
-      }
-      .actions-row .btn{
-        width:100%;
-      }
+      .actions-row{ flex-direction:column; align-items:stretch; }
+      .actions-row .right{ width:100%; justify-content:stretch; }
+      .actions-row .btn{ width:100%; }
     }
 
-    /* NEW: Subject preview chip */
     .subject-preview{
       margin-top:8px;
       padding:10px 12px;
@@ -440,7 +403,6 @@
     </header>
 
     <section class="card" aria-live="polite">
-      <!-- iPad-friendly stepper -->
       <div class="stepper" id="stepper">
         <div class="pill active" data-step="1"><span class="dot"></span> Center</div>
         <div class="pill" data-step="2"><span class="dot"></span> Ninja</div>
@@ -449,7 +411,7 @@
         <div class="pill" data-step="5"><span class="dot"></span> Images</div>
       </div>
 
-      <!-- STEP 1: CENTER -->
+      <!-- STEP 1 -->
       <div class="step active" id="step1">
         <div class="step-header">
           <div class="step-number">1</div>
@@ -474,14 +436,12 @@
         <div class="actions-row">
           <div></div>
           <div class="right">
-            <button class="btn primary" type="button" id="next1" disabled>
-              Next ▶
-            </button>
+            <button class="btn primary" type="button" id="next1" disabled>Next ▶</button>
           </div>
         </div>
       </div>
 
-      <!-- STEP 2: NINJA -->
+      <!-- STEP 2 -->
       <div class="step" id="step2">
         <div class="step-header">
           <div class="step-number">2</div>
@@ -516,6 +476,15 @@
           <input id="senderName" type="text" placeholder="e.g., Marina" value="Marina" autocomplete="off" />
         </div>
 
+        <!-- NEW: Referral link field (optional) -->
+        <div class="question-container">
+          <label for="referralLink" class="field-label">Give $99 / Get $99 referral link (optional)</label>
+          <input id="referralLink" type="text" placeholder="Paste your referral link here (optional)" autocomplete="off" />
+          <div class="inline-note">
+            If you paste a link here, the message will include the Give $99 / Get $99 perk + the link.
+          </div>
+        </div>
+
         <div class="actions-row">
           <button class="btn ghost" type="button" id="back2">◀ Back</button>
           <div class="right">
@@ -524,7 +493,7 @@
         </div>
       </div>
 
-      <!-- STEP 3: SHOUT-OUT TYPE -->
+      <!-- STEP 3 -->
       <div class="step" id="step3">
         <div class="step-header">
           <div class="step-number">3</div>
@@ -666,7 +635,7 @@
         </div>
       </div>
 
-      <!-- STEP 4: MESSAGE + SUBJECT PREVIEW -->
+      <!-- STEP 4 -->
       <div class="step" id="step4">
         <div class="step-header" style="margin-top:0;">
           <div class="step-number">4</div>
@@ -705,7 +674,7 @@
         </div>
       </div>
 
-      <!-- STEP 5: IMAGES + EMAIL -->
+      <!-- STEP 5 -->
       <div class="step" id="step5">
         <div class="step-header" style="margin-top:0;">
           <div class="step-number">5</div>
@@ -785,7 +754,7 @@
       return { ...p, subjCap: cap(p.subj), objCap: cap(p.obj), possAdjCap: cap(p.possAdj) };
     }
 
-    // ===== CENTER MAP (auto email) =====
+    // ===== CENTER MAP =====
     const centerMap = {
       cooper:  { label: "Cooper City", email: "coopercityfl@codeninjas.com", centerName: "Code Ninjas Cooper City" },
       aventura:{ label: "Aventura",    email: "aventurafl@codeninjas.com",   centerName: "Code Ninjas Aventura" },
@@ -797,8 +766,19 @@
       return centerMap[key] || centerMap.cooper;
     }
 
-    // ===== TEXT TEMPLATES (no learn-more/referral/QR) =====
-    function baseStandardMessage(ninjaName, parentName, core, senderName, centerName){
+    // ===== PROMO LINES =====
+    function buildReferralPromo(refLink){
+      const link = (refLink || "").trim();
+      if(!link) return "";
+      return (
+        `\n\n🎁 P.S. Referral perk: Give $99, Get $99!\n` +
+        `If you refer a friend, they’ll get $99 off and you’ll get $99 off too.\n` +
+        `Here’s your referral link: ${link}`
+      );
+    }
+
+    // ===== TEXT TEMPLATES =====
+    function baseStandardMessage(ninjaName, parentName, core, senderName, centerName, referralLink){
       const sender = (senderName || "Marina").trim();
       const child = (ninjaName || "your Ninja").trim();
       const center = (centerName || "Code Ninjas").trim();
@@ -811,11 +791,12 @@
         `This is ${sender} from ${center}.\n\n` +
         `I just wanted to share how great ${child} was today. ${core}\n\n` +
         `I grabbed a quick photo of ${child} in the dojo and thought you might like it. If you’d like to share it with friends or family, feel free. 😊\n\n` +
-        `Thanks for being part of our dojo family! 💙`
+        `Thanks for being part of our dojo family! 💙` +
+        buildReferralPromo(referralLink)
       );
     }
 
-    function baseBirthdayMessage(ninjaName, parentName, core, senderName, pronoun, centerName){
+    function baseBirthdayMessage(ninjaName, parentName, core, senderName, pronoun, centerName, referralLink){
       const sender = (senderName || "Marina").trim();
       const child = (ninjaName || "your Ninja").trim();
       const center = (centerName || "Code Ninjas").trim();
@@ -829,11 +810,12 @@
         `We loved celebrating ${child}’s birthday in the dojo today! ${core}\n\n` +
         `We snapped a quick picture of ${child} in action and thought you might like to have it. Feel free to share it with friends or family if you’d like. 🎂\n\n` +
         `Since it was ${pronoun.possAdj} special day, we’re also running a birthday special: our 1+1 CREATE + Clubs bundle for a discounted rate of $249. If you’d ever like more details or want to check if it’s a good fit, I’m happy to share.\n\n` +
-        `Thanks for letting us be part of ${child}’s day! 💙`
+        `Thanks for letting us be part of ${child}’s day! 💙` +
+        buildReferralPromo(referralLink)
       );
     }
 
-    function baseTourMessage(ninjaName, parentName, core, senderName, centerName){
+    function baseTourMessage(ninjaName, parentName, core, senderName, centerName, referralLink){
       const sender = (senderName || "Marina").trim();
       const center = (centerName || "Code Ninjas").trim();
       const parentLine = parentName && parentName.trim()
@@ -846,7 +828,8 @@
         `${core}\n\n` +
         `We grabbed a quick photo from the tour and thought you might like it. 😊 If you’d like to share it with friends or family, go for it.\n\n` +
         `Whenever you’re ready to get started, you can use code TOUR for no enrollment fee for up to two weeks. No pressure at all—just wanted to pass the option along.\n\n` +
-        `Thanks again for stopping by the dojo! 💙`
+        `Thanks again for stopping by the dojo! 💙` +
+        buildReferralPromo(referralLink)
       );
     }
 
@@ -930,20 +913,20 @@
       return randomFrom(options)(trimmedName, pronoun);
     }
 
-    function buildFullMessage(name, reason, customReason, senderName, senseiName, parentName, pronoun, centerName){
+    function buildFullMessage(name, reason, customReason, senderName, senseiName, parentName, pronoun, centerName, referralLink){
       const core = buildCoreMessage(name, reason, customReason, senseiName, pronoun);
       if(!core) return "";
 
       if(reason === "birthday"){
-        return baseBirthdayMessage(name, parentName, core, senderName, pronoun, centerName);
+        return baseBirthdayMessage(name, parentName, core, senderName, pronoun, centerName, referralLink);
       }
       if(reason === "tour"){
-        return baseTourMessage(name, parentName, core, senderName, centerName);
+        return baseTourMessage(name, parentName, core, senderName, centerName, referralLink);
       }
-      return baseStandardMessage(name, parentName, core, senderName, centerName);
+      return baseStandardMessage(name, parentName, core, senderName, centerName, referralLink);
     }
 
-    // ===== SUBJECT LINE GENERATION + PREVIEW =====
+    // ===== SUBJECT LINE =====
     function buildEmailSubject(style, ninjaName, reason, centerLabel){
       const n = (ninjaName || "").trim();
       const r = reasonLabels[reason] || "Shoutout";
@@ -956,7 +939,7 @@
       if(style === "hype"){
         return n ? `LEVEL UP! ${n} – ${r} 🎉🔥 (${c})` : `LEVEL UP! Ninja Shoutout 🎉🔥 (${c})`;
       }
-      return n ? `${base} (${c})` : `${base} (${c})`;
+      return `${base} (${c})`;
     }
 
     // ===== BANNERS / CLIPBOARD =====
@@ -990,7 +973,7 @@
       }
     }
 
-    // ===== IMAGE / CANVAS (TWO FRAMES + ZOOM/PAN + DRAG) =====
+    // ===== IMAGE / CANVAS =====
     let userImage = null;
     let frameWideImage = null;
     let frameStoryImage = null;
@@ -1055,7 +1038,38 @@
       ctx.drawImage(img, sx, sy, sw, sh);
     }
 
-    // Auto-fit bubble text (no “learn more” line)
+    // NEW: Footer line on images
+    function drawVisitFooter(ctx, width, height, mode){
+      const text = "Visit CodeNinjas.com to learn more";
+      const fontSize = mode === "wide" ? Math.round(width * 0.020) : Math.round(width * 0.050);
+      const padX = mode === "wide" ? 26 : 18;
+      const padY = mode === "wide" ? 14 : 12;
+
+      ctx.save();
+      ctx.font = `800 ${fontSize}px system-ui, -apple-system, 'Segoe UI', sans-serif`;
+      const tw = ctx.measureText(text).width;
+
+      const boxW = tw + padX*2;
+      const boxH = fontSize + padY*2;
+
+      const x = (width - boxW) / 2;
+      const y = height - boxH - (mode === "wide" ? 22 : 26);
+
+      // bg
+      ctx.fillStyle = "rgba(0,0,0,0.55)";
+      ctx.beginPath();
+      if(ctx.roundRect) ctx.roundRect(x, y, boxW, boxH, 16);
+      else ctx.rect(x,y,boxW,boxH);
+      ctx.fill();
+
+      // text
+      ctx.fillStyle = "#ffffff";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, x + padX, y + boxH/2);
+
+      ctx.restore();
+    }
+
     function renderShoutoutText(ctx, width, height, mode){
       let message = latestCoreMessage;
       if (!message) return;
@@ -1079,7 +1093,7 @@
       }else{
         maxWidth = width * 0.85;
         marginX = width * 0.05;
-        marginY = height * 0.05;
+        marginY = height * 0.12; // slightly higher so footer has room
         fontSizeStart = Math.round(width * 0.04);
         minFont = 18;
         lineHeightMult = 1.3;
@@ -1130,14 +1144,12 @@
       }
       bgY = height - bgHeight - marginY;
 
-      // Bubble
       ctx.fillStyle = "rgba(0,0,0,0.45)";
       ctx.beginPath();
       if (ctx.roundRect) ctx.roundRect(bgX, bgY, bgWidth, bgHeight, 25);
       else ctx.rect(bgX, bgY, bgWidth, bgHeight);
       ctx.fill();
 
-      // Text
       ctx.textBaseline = "top";
       ctx.fillStyle = "#ffffff";
       ctx.font = `${fontSize}px system-ui, -apple-system, 'Segoe UI', sans-serif`;
@@ -1177,12 +1189,14 @@
       drawCoverImage(userImage, ctxWide, ww, wh, zoom, panX, panY);
       ctxWide.drawImage(frameWideImage, 0, 0, ww, wh);
       renderShoutoutText(ctxWide, ww, wh, "wide");
+      drawVisitFooter(ctxWide, ww, wh, "wide"); // NEW
 
       const sw = canvasStory.width, sh = canvasStory.height;
       ctxStory.clearRect(0,0,sw,sh);
       drawCoverImage(userImage, ctxStory, sw, sh, zoom, panX, panY);
       ctxStory.drawImage(frameStoryImage, 0, 0, sw, sh);
       renderShoutoutText(ctxStory, sw, sh, "story");
+      drawVisitFooter(ctxStory, sw, sh, "story"); // NEW
 
       latestImageGenerated = true;
     }
@@ -1191,7 +1205,6 @@
     document.addEventListener("DOMContentLoaded", function(){
       loadFrames();
 
-      // Elements
       const stepper = document.getElementById("stepper");
 
       const centerSelect = document.getElementById("centerSelect");
@@ -1201,6 +1214,7 @@
       const parentInput = document.getElementById("parentName");
       const pronounSelect = document.getElementById("pronounSelect");
       const senderInput = document.getElementById("senderName");
+      const referralLinkInput = document.getElementById("referralLink"); // NEW
 
       const customInput = document.getElementById("customReason");
       const senseiInput = document.getElementById("senseiName");
@@ -1237,7 +1251,6 @@
       const generateBtn = document.getElementById("generateBtn");
       const copyBtn = document.getElementById("copyBtn");
 
-      // Step functions
       let currentStep = 1;
       function showStep(step){
         document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
@@ -1245,21 +1258,15 @@
         if(el) el.classList.add("active");
         currentStep = step;
 
-        // Stepper highlight
         document.querySelectorAll(".pill").forEach(p => {
           p.classList.toggle("active", parseInt(p.getAttribute("data-step"),10) === step);
         });
       }
 
-      // Allow tapping pills to navigate (but keep validation)
       stepper.querySelectorAll(".pill").forEach(p => {
         p.addEventListener("click", () => {
           const target = parseInt(p.getAttribute("data-step"),10);
-          // Only allow going forward if prerequisites met; always allow going backward.
-          if(target < currentStep){
-            showStep(target);
-            return;
-          }
+          if(target < currentStep){ showStep(target); return; }
           if(target === 2 && !canGoToStep2()) return showErr("Select a center first.");
           if(target === 3 && !canGoToStep3()) return showErr("Fill Ninja details first.");
           if(target === 4 && !canGoToStep4()) return showErr("Pick a shout-out reason first.");
@@ -1276,7 +1283,7 @@
       function updateCenterUI(){
         const c = getCenter();
         centerEmailDisplay.textContent = c.email;
-        next1.disabled = !c; // always enabled in practice
+        next1.disabled = !c;
       }
 
       function updateSelectionVisuals(){
@@ -1298,18 +1305,10 @@
         subjectPreview.textContent = subj;
       }
 
-      function canGoToStep2(){
-        return !!getCenter();
-      }
-      function canGoToStep3(){
-        return canGoToStep2() && !!nameInput.value.trim() && !!(senderInput.value || "").trim();
-      }
-      function canGoToStep4(){
-        return canGoToStep3() && !!getSelectedReason();
-      }
-      function canGoToStep5(){
-        return canGoToStep4() && !!(output.value || "").trim();
-      }
+      function canGoToStep2(){ return !!getCenter(); }
+      function canGoToStep3(){ return canGoToStep2() && !!nameInput.value.trim() && !!(senderInput.value || "").trim(); }
+      function canGoToStep4(){ return canGoToStep3() && !!getSelectedReason(); }
+      function canGoToStep5(){ return canGoToStep4() && !!(output.value || "").trim(); }
 
       function updateNextButtons(){
         next1.disabled = !canGoToStep2();
@@ -1318,30 +1317,25 @@
         next4.disabled = !canGoToStep5();
       }
 
-      // Initial
       updateCenterUI();
       updateNextButtons();
       updateSubjectPreview();
 
-      // Center change
       centerSelect.addEventListener("change", () => {
         updateCenterUI();
         updateSubjectPreview();
         updateNextButtons();
       });
 
-      // Ninja fields
       [nameInput, senderInput].forEach(el => el.addEventListener("input", () => {
         updateNextButtons();
         updateSubjectPreview();
       }));
       parentInput.addEventListener("input", updateSubjectPreview);
       pronounSelect.addEventListener("change", updateSubjectPreview);
-
-      // Subject style
+      referralLinkInput.addEventListener("input", () => {}); // optional; no gating
       subjectStyle.addEventListener("change", updateSubjectPreview);
 
-      // Reason selection
       optionCards.forEach(card => {
         card.addEventListener("click", () => {
           const input = card.querySelector("input");
@@ -1355,7 +1349,6 @@
         i.addEventListener("change", updateSelectionVisuals);
       });
 
-      // Navigation buttons
       next1.addEventListener("click", () => showStep(2));
       back2.addEventListener("click", () => showStep(1));
       next2.addEventListener("click", () => showStep(3));
@@ -1365,7 +1358,6 @@
       next4.addEventListener("click", () => showStep(5));
       back5.addEventListener("click", () => showStep(4));
 
-      // Generate message
       generateBtn.addEventListener("click", () => {
         const c = getCenter();
         const name = nameInput.value;
@@ -1375,35 +1367,20 @@
         const senderName = senderInput.value || "Marina";
         const senseiName = senseiInput.value;
         const pronoun = getPronouns(pronounSelect.value);
+        const referralLink = (referralLinkInput.value || "").trim(); // NEW
 
-        if(!c){
-          showErr("Choose a center first.");
-          showStep(1);
-          return;
-        }
-        if(!name.trim()){
-          showErr("Please enter the Ninja’s name first.");
-          showStep(2);
-          nameInput.focus();
-          return;
-        }
-        if(!reason){
-          showErr("Please choose what you’re shouting them out for.");
-          showStep(3);
-          return;
-        }
+        if(!c){ showErr("Choose a center first."); showStep(1); return; }
+        if(!name.trim()){ showErr("Please enter the Ninja’s name first."); showStep(2); nameInput.focus(); return; }
+        if(!reason){ showErr("Please choose what you’re shouting them out for."); showStep(3); return; }
 
         const core = buildCoreMessage(name, reason, custom, senseiName, pronoun);
-        if(!core){
-          showErr("Could not generate. Try again.");
-          return;
-        }
+        if(!core){ showErr("Could not generate. Try again."); return; }
 
         latestCoreMessage = core;
         currentReason = reason;
         currentNinjaName = name.trim();
 
-        const msg = buildFullMessage(name, reason, custom, senderName, senseiName, parentName, pronoun, c.centerName);
+        const msg = buildFullMessage(name, reason, custom, senderName, senseiName, parentName, pronoun, c.centerName, referralLink);
         output.value = msg;
 
         updateSubjectPreview();
@@ -1411,18 +1388,13 @@
         showOk("Generated! You can copy it or go to images.");
       });
 
-      // Copy
       copyBtn.addEventListener("click", async () => {
         const text = (output.value || "").trim();
-        if(!text){
-          showErr("Generate the message first.");
-          return;
-        }
+        if(!text){ showErr("Generate the message first."); return; }
         const ok = await copyToClipboard(text);
         ok ? showOk("Copied! 📋") : showErr("Couldn’t copy automatically. Please copy manually.");
       });
 
-      // Photo input
       photoInput.addEventListener("change", (e) => {
         const file = e.target.files && e.target.files[0];
         if(file){
@@ -1432,7 +1404,6 @@
         }
       });
 
-      // Slider labels + live rerender
       function refreshSliderLabels(){
         zoomLabel.textContent = `${parseFloat(zoomSlider.value).toFixed(2)}×`;
         panXLabel.textContent = panXSlider.value;
@@ -1450,7 +1421,6 @@
       });
       refreshSliderLabels();
 
-      // Drag-to-pan + wheel zoom on canvases
       function clamp(num, min, max){ return Math.max(min, Math.min(max, num)); }
 
       function attachCanvasInteractions(canvasEl){
@@ -1473,7 +1443,6 @@
           const dx = e.clientX - startX;
           const dy = e.clientY - startY;
 
-          // sensitivity tuned for iPad/desktop
           const sens = 0.25;
           panXSlider.value = clamp(startPanX + dx * sens, -100, 100);
           panYSlider.value = clamp(startPanY + dy * sens, -100, 100);
@@ -1508,7 +1477,6 @@
       attachCanvasInteractions(canvasWide);
       attachCanvasInteractions(canvasStory);
 
-      // Render images
       renderImageBtn.addEventListener("click", () => {
         renderShoutoutImages();
         downloadWideBtn.disabled = false;
@@ -1516,7 +1484,6 @@
         showOk("Images generated!");
       });
 
-      // Download
       downloadWideBtn.addEventListener("click", () => {
         const dataUrl = canvasWide.toDataURL("image/png");
         const link = document.createElement("a");
@@ -1539,25 +1506,16 @@
         showOk("Story downloaded.");
       });
 
-      // Email
       emailBtn.addEventListener("click", () => {
         const text = (output.value || "").trim();
-        if(!text){
-          showErr("Generate the message first (Step 4) before emailing.");
-          showStep(4);
-          return;
-        }
-        if(!latestImageGenerated){
-          showErr("Generate the images first, then download them to attach in your email.");
-          return;
-        }
+        if(!text){ showErr("Generate the message first (Step 4) before emailing."); showStep(4); return; }
+        if(!latestImageGenerated){ showErr("Generate the images first, then download them to attach in your email."); return; }
 
         const c = getCenter();
         const style = subjectStyle.value || "simple";
         const reason = currentReason || getSelectedReason() || "belt";
         const subject = buildEmailSubject(style, nameInput.value, reason, c.label);
 
-        // show the subject it generates (requested)
         showOk(`Subject: ${subject}`);
 
         const body =
@@ -1570,10 +1528,7 @@
         window.location.href = mailto;
       });
 
-      // Validation: enable Step 1 next immediately
       next1.disabled = false;
-
-      // Keep next buttons updated initially
       updateSelectionVisuals();
       updateNextButtons();
       showStep(1);
