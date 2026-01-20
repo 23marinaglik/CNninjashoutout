@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ninja Shoutout</title>
 
-  <!-- iPad / iPhone web app meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Ninja Shoutout">
@@ -399,7 +398,6 @@
         <img class="logo" src="https://www.codeninjas.com/hubfs/Group%201.svg" alt="Code Ninjas logo" onerror="this.style.display='none'">
       </div>
       <h1>Ninja Shout-Out Builder</h1>
-      <p>Tap through the steps (iPad-friendly) to generate a message + two shout-out images.</p>
     </header>
 
     <section class="card" aria-live="polite">
@@ -411,13 +409,11 @@
         <div class="pill" data-step="5"><span class="dot"></span> Images</div>
       </div>
 
-      <!-- STEP 1 -->
       <div class="step active" id="step1">
         <div class="step-header">
           <div class="step-number">1</div>
           <div>
             <h2>Choose your center</h2>
-            <p class="step-description">This sets the center email automatically for the “Email to center” button.</p>
           </div>
         </div>
 
@@ -441,48 +437,36 @@
         </div>
       </div>
 
-      <!-- STEP 2 -->
       <div class="step" id="step2">
         <div class="step-header">
           <div class="step-number">2</div>
           <div>
             <h2>Ninja details</h2>
-            <p class="step-description">Name + parent greeting + pronouns + who’s sending the message.</p>
           </div>
         </div>
 
         <div class="question-container">
           <label for="ninjaName" class="field-label">Ninja’s name</label>
-          <input id="ninjaName" type="text" placeholder="e.g., Alex, Sophia, Ethan" autocomplete="off" />
+          <input id="ninjaName" type="text" placeholder="e.g., Alex, Sophia" autocomplete="off" />
         </div>
 
         <div class="question-container">
-          <label for="parentName" class="field-label">Parent name (optional)</label>
-          <input id="parentName" type="text" placeholder="e.g., Emma’s mom, Sarah" autocomplete="off" />
-          <div class="inline-note">If blank, it will start with “Hi there,”.</div>
+          <label for="parentName" class="field-label">Parent name</label>
+          <input id="parentName" type="text" placeholder="e.g., Emma’s mom" autocomplete="off" />
         </div>
 
         <div class="question-container">
           <label for="pronounSelect" class="field-label">Ninja pronouns</label>
           <select id="pronounSelect">
-            <option value="they">They / their (default)</option>
+            <option value="they">They / their</option>
             <option value="he">He / his</option>
             <option value="she">She / her</option>
           </select>
         </div>
 
         <div class="question-container">
-          <label for="senderName" class="field-label">Sender name (who is texting?)</label>
+          <label for="senderName" class="field-label">Sender name</label>
           <input id="senderName" type="text" placeholder="e.g., Marina" value="Marina" autocomplete="off" />
-        </div>
-
-        <!-- NEW: Referral link field (optional) -->
-        <div class="question-container">
-          <label for="referralLink" class="field-label">Give $99 / Get $99 referral link (optional)</label>
-          <input id="referralLink" type="text" placeholder="Paste your referral link here (optional)" autocomplete="off" />
-          <div class="inline-note">
-            If you paste a link here, the message will include the Give $99 / Get $99 perk + the link.
-          </div>
         </div>
 
         <div class="actions-row">
@@ -493,25 +477,33 @@
         </div>
       </div>
 
-      <!-- STEP 3 -->
       <div class="step" id="step3">
         <div class="step-header">
           <div class="step-number">3</div>
           <div>
             <h2>What are we shouting them out for?</h2>
-            <p class="step-description">Pick a reason. “Tour” shows the Sensei field. “Custom” lets you type a reason.</p>
           </div>
         </div>
 
         <div class="question-container">
           <div class="options-grid" id="shoutoutGrid">
+            
+            <label class="shoutout-option">
+              <input type="radio" name="reason" value="newninja">
+              <div class="option-content">
+                <div class="option-icon">🥰</div>
+                <div>
+                  <div class="option-text">New Ninja Welcome</div>
+                </div>
+              </div>
+            </label>
+
             <label class="shoutout-option">
               <input type="radio" name="reason" value="belt">
               <div class="option-content">
                 <div class="option-icon">🎉</div>
                 <div>
                   <div class="option-text">Belt-up celebration</div>
-                  <div class="option-sub">Leveling up their belt in the dojo.</div>
                 </div>
               </div>
             </label>
@@ -522,7 +514,6 @@
                 <div class="option-icon">💻</div>
                 <div>
                   <div class="option-text">Cool project</div>
-                  <div class="option-sub">Finished something awesome in class.</div>
                 </div>
               </div>
             </label>
@@ -533,7 +524,6 @@
                 <div class="option-icon">⭐</div>
                 <div>
                   <div class="option-text">Outstanding student</div>
-                  <div class="option-sub">Focus, effort, and great attitude.</div>
                 </div>
               </div>
             </label>
@@ -544,7 +534,6 @@
                 <div class="option-icon">😊</div>
                 <div>
                   <div class="option-text">Well-behaved</div>
-                  <div class="option-sub">Respectful, kind, a great example.</div>
                 </div>
               </div>
             </label>
@@ -555,29 +544,6 @@
                 <div class="option-icon">🤝</div>
                 <div>
                   <div class="option-text">Helped another student</div>
-                  <div class="option-sub">Leadership + teamwork moment.</div>
-                </div>
-              </div>
-            </label>
-
-            <label class="shoutout-option">
-              <input type="radio" name="reason" value="attendance">
-              <div class="option-content">
-                <div class="option-icon">📅</div>
-                <div>
-                  <div class="option-text">Great attendance</div>
-                  <div class="option-sub">Showing up consistently to level up.</div>
-                </div>
-              </div>
-            </label>
-
-            <label class="shoutout-option">
-              <input type="radio" name="reason" value="leadership">
-              <div class="option-content">
-                <div class="option-icon">🧠</div>
-                <div>
-                  <div class="option-text">Leadership / teamwork</div>
-                  <div class="option-sub">Encouraging others + great energy.</div>
                 </div>
               </div>
             </label>
@@ -588,7 +554,6 @@
                 <div class="option-icon">🎂</div>
                 <div>
                   <div class="option-text">Birthday shout-out</div>
-                  <div class="option-sub">Includes the $249 1+1 bundle mention.</div>
                 </div>
               </div>
             </label>
@@ -599,7 +564,6 @@
                 <div class="option-icon">🏯</div>
                 <div>
                   <div class="option-text">Tour follow-up</div>
-                  <div class="option-sub">Invite them back after touring.</div>
                 </div>
               </div>
             </label>
@@ -610,7 +574,6 @@
                 <div class="option-icon">✨</div>
                 <div>
                   <div class="option-text">Custom shout-out</div>
-                  <div class="option-sub">Type your own reason (focus, kindness, etc.).</div>
                 </div>
               </div>
             </label>
@@ -618,13 +581,13 @@
         </div>
 
         <div class="question-container">
-          <label for="customReason" class="field-label">If custom, what are we celebrating? (optional)</label>
-          <input id="customReason" type="text" placeholder='e.g., "amazing focus today", "being so kind to others"' autocomplete="off" />
+          <label for="customReason" class="field-label">If custom, what are we celebrating?</label>
+          <input id="customReason" type="text" placeholder='e.g., "amazing focus today"' autocomplete="off" />
         </div>
 
         <div class="question-container" id="senseiRow" style="display:none;">
-          <label for="senseiName" class="field-label">Sensei name (for tour texts)</label>
-          <input id="senseiName" type="text" placeholder='e.g., "Sensei Alex"' autocomplete="off" />
+          <label for="senseiName" class="field-label">Sensei name (for tours)</label>
+          <input id="senseiName" type="text" placeholder='e.g., "Sensei Alexis"' autocomplete="off" />
         </div>
 
         <div class="actions-row">
@@ -635,13 +598,12 @@
         </div>
       </div>
 
-      <!-- STEP 4 -->
       <div class="step" id="step4">
-        <div class="step-header" style="margin-top:0;">
+        <div class="step-header">
           <div class="step-number">4</div>
           <div>
             <h2>Generate message</h2>
-            <p class="step-description">Pick a subject style, generate the message, then copy or continue to images.</p>
+            <p class="step-description">Preview and copy your message.</p>
           </div>
         </div>
 
@@ -652,46 +614,38 @@
             <option value="warm">Warm</option>
             <option value="hype">Hype</option>
           </select>
-
           <div class="subject-preview">
             <div class="label">Subject preview</div>
-            <div class="value" id="subjectPreview">Ninja Shoutout – (generate to preview)</div>
+            <div class="value" id="subjectPreview">Ninja Shoutout...</div>
           </div>
         </div>
 
         <div class="question-container">
-          <label for="messageOutput" class="field-label">Message to parent (SMS or email)</label>
-          <textarea id="messageOutput" placeholder="Tap “Generate” to build your message." readonly></textarea>
+          <label for="messageOutput" class="field-label">Message</label>
+          <textarea id="messageOutput" readonly></textarea>
         </div>
 
         <div class="actions-row">
           <button class="btn ghost" type="button" id="back4">◀ Back</button>
           <div class="right">
             <button class="btn ghost" type="button" id="generateBtn">✨ Generate</button>
-            <button class="btn primary" type="button" id="copyBtn">📋 Copy message</button>
+            <button class="btn primary" type="button" id="copyBtn">📋 Copy</button>
             <button class="btn" type="button" id="next4" disabled>Next ▶</button>
           </div>
         </div>
       </div>
 
-      <!-- STEP 5 -->
       <div class="step" id="step5">
-        <div class="step-header" style="margin-top:0;">
+        <div class="step-header">
           <div class="step-number">5</div>
           <div>
             <h2>Shout-out pictures</h2>
-            <p class="step-description">
-              Upload a photo. Drag on the canvas to reposition, scroll to zoom, or use sliders. Then download or email to the center.
-            </p>
           </div>
         </div>
 
         <div class="question-container">
           <label for="photoInput" class="field-label">Ninja photo</label>
           <input id="photoInput" type="file" accept="image/*" />
-          <div class="inline-note">
-            Put <strong>ninja-shoutout-frame.png</strong> (landscape) and <strong>Congratulations! (Your Story).png</strong> (vertical) in the same folder as this HTML file.
-          </div>
         </div>
 
         <div class="photo-controls">
@@ -712,826 +666,129 @@
         <div class="canvas-wrap">
           <div class="canvas-inner">
             <div class="canvas-row">
-              <label class="field-label">Landscape frame</label>
               <canvas id="shoutoutCanvasWide" width="1650" height="1275"></canvas>
             </div>
-
             <div class="canvas-row">
-              <label class="field-label">Vertical story frame</label>
               <canvas id="shoutoutCanvasStory" width="768" height="1365"></canvas>
             </div>
 
-            <div class="actions-row" style="justify-content:space-between;margin-top:6px;">
+            <div class="actions-row">
               <button class="btn ghost" type="button" id="back5">◀ Back</button>
               <div class="right">
                 <button class="btn ghost" type="button" id="renderImageBtn">🖼 Generate images</button>
-                <button class="btn" type="button" id="downloadWideBtn" disabled>⬇ Download landscape</button>
-                <button class="btn" type="button" id="downloadStoryBtn" disabled>⬇ Download story</button>
                 <button class="btn primary" type="button" id="emailBtn">✉️ Email to center</button>
               </div>
             </div>
           </div>
         </div>
       </div>
-
       <div id="okBanner" class="banner ok"></div>
       <div id="errBanner" class="banner error"></div>
     </section>
   </div>
 
   <script>
-    // ===== PRONOUNS =====
     function getPronouns(code){
-      let p;
-      if(code === "he"){
-        p = {subj:"he", obj:"him", possAdj:"his", possPron:"his", refl:"himself"};
-      } else if(code === "she"){
-        p = {subj:"she", obj:"her", possAdj:"her", possPron:"hers", refl:"herself"};
-      } else {
-        p = {subj:"they", obj:"them", possAdj:"their", possPron:"theirs", refl:"themselves"};
-      }
+      let p = {subj:"they", obj:"them", possAdj:"their", possPron:"theirs", refl:"themselves"};
+      if(code === "he") p = {subj:"he", obj:"him", possAdj:"his", possPron:"his", refl:"himself"};
+      if(code === "she") p = {subj:"she", obj:"her", possAdj:"her", possPron:"hers", refl:"herself"};
       const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
       return { ...p, subjCap: cap(p.subj), objCap: cap(p.obj), possAdjCap: cap(p.possAdj) };
     }
 
-    // ===== CENTER MAP =====
     const centerMap = {
       cooper:  { label: "Cooper City", email: "coopercityfl@codeninjas.com", centerName: "Code Ninjas Cooper City" },
-      aventura:{ label: "Aventura",    email: "aventurafl@codeninjas.com",   centerName: "Code Ninjas Aventura" },
-      weston:  { label: "Weston",      email: "westonfl@codeninjas.com",     centerName: "Code Ninjas Weston" }
+      aventura:{ label: "Aventura",    email: "aventurafl@codeninjas.com",    centerName: "Code Ninjas Aventura" },
+      weston:  { label: "Weston",      email: "westonfl@codeninjas.com",      centerName: "Code Ninjas Weston" }
     };
 
     function getCenter(){
-      const key = document.getElementById("centerSelect")?.value || "cooper";
-      return centerMap[key] || centerMap.cooper;
+      return centerMap[document.getElementById("centerSelect").value] || centerMap.cooper;
     }
 
-    // ===== PROMO LINES =====
-    function buildReferralPromo(refLink){
-      const link = (refLink || "").trim();
-      if(!link) return "";
-      return (
-        `\n\n🎁 P.S. Referral perk: Give $99, Get $99!\n` +
-        `If you refer a friend, they’ll get $99 off and you’ll get $99 off too.\n` +
-        `Here’s your referral link: ${link}`
-      );
-    }
-
-    // ===== TEXT TEMPLATES =====
-    function baseStandardMessage(ninjaName, parentName, core, senderName, centerName, referralLink){
-      const sender = (senderName || "Marina").trim();
-      const child = (ninjaName || "your Ninja").trim();
-      const center = (centerName || "Code Ninjas").trim();
-      const parentLine = parentName && parentName.trim()
-        ? `Hi ${parentName.trim()},`
-        : "Hi there,";
-
-      return (
-        `${parentLine}\n` +
-        `This is ${sender} from ${center}.\n\n` +
-        `I just wanted to share how great ${child} was today. ${core}\n\n` +
-        `I grabbed a quick photo of ${child} in the dojo and thought you might like it. If you’d like to share it with friends or family, feel free. 😊\n\n` +
-        `Thanks for being part of our dojo family! 💙` +
-        buildReferralPromo(referralLink)
-      );
-    }
-
-    function baseBirthdayMessage(ninjaName, parentName, core, senderName, pronoun, centerName, referralLink){
-      const sender = (senderName || "Marina").trim();
-      const child = (ninjaName || "your Ninja").trim();
-      const center = (centerName || "Code Ninjas").trim();
-      const parentLine = parentName && parentName.trim()
-        ? `Hi ${parentName.trim()},`
-        : "Hi there,";
-
-      return (
-        `${parentLine}\n` +
-        `This is ${sender} from ${center}.\n\n` +
-        `We loved celebrating ${child}’s birthday in the dojo today! ${core}\n\n` +
-        `We snapped a quick picture of ${child} in action and thought you might like to have it. Feel free to share it with friends or family if you’d like. 🎂\n\n` +
-        `Since it was ${pronoun.possAdj} special day, we’re also running a birthday special: our 1+1 CREATE + Clubs bundle for a discounted rate of $249. If you’d ever like more details or want to check if it’s a good fit, I’m happy to share.\n\n` +
-        `Thanks for letting us be part of ${child}’s day! 💙` +
-        buildReferralPromo(referralLink)
-      );
-    }
-
-    function baseTourMessage(ninjaName, parentName, core, senderName, centerName, referralLink){
-      const sender = (senderName || "Marina").trim();
-      const center = (centerName || "Code Ninjas").trim();
-      const parentLine = parentName && parentName.trim()
-        ? `Hi ${parentName.trim()},`
-        : "Hi there,";
-
-      return (
-        `${parentLine}\n` +
-        `This is ${sender} from ${center}.\n\n` +
-        `${core}\n\n` +
-        `We grabbed a quick photo from the tour and thought you might like it. 😊 If you’d like to share it with friends or family, go for it.\n\n` +
-        `Whenever you’re ready to get started, you can use code TOUR for no enrollment fee for up to two weeks. No pressure at all—just wanted to pass the option along.\n\n` +
-        `Thanks again for stopping by the dojo! 💙` +
-        buildReferralPromo(referralLink)
-      );
+    function buildInvitation(ninjaName) {
+      const name = (ninjaName || "your Ninja").trim();
+      return `\n\nI’d also love to personally invite you to connect with me! If you’d ever like to discuss ${name}’s progress, hear more about the specific skills they are learning, or if you have any suggestions for our program, please just reply to this message. I’d love to meet you 1-on-1 to ensure we’re providing the best possible experience for your Ninja.`;
     }
 
     const coreTemplates = {
-      belt: [
-        (n,p) => `${n} leveled up ${p.possAdj} belt today! ${p.subjCap} worked really hard and it paid off in the dojo. 🙌`,
-        (n,p) => `${n} earned a new belt today and ${p.possAdj} consistency in class is really starting to shine. We were all proud of ${p.obj}!`,
-        (n,p) => `${n} crushed it and ranked up ${p.possAdj} belt today—such a great example of sticking with a challenge.`
+      newninja: [
+        (n,p) => `It was such a milestone day—${n} officially started their journey as a Ninja today! We are so excited to have your family as part of our dojo and can’t wait to see the amazing projects ${n} will create.`,
+        (n,p) => `${n} had a fantastic first day in the dojo! They jumped right into the curriculum with great energy, and we are thrilled to have them officially join our Code Ninjas family.`,
+        (n,p) => `Welcome to the dojo! ${n} did an incredible job during their first official session today. It’s the start of something great, and we’re honored to be part of their coding journey.`
       ],
-      project: [
-        (n,p) => `${n} built a really awesome coding project today! 💻 ${p.subjCap} showed a ton of creativity and problem-solving.`,
-        (n,p) => `${n} completed an impressive project today and stayed focused from start to finish.`,
-        (n,p) => `${n} showed strong skills and creativity today with a very cool project in class.`
-      ],
-      outstanding: [
-        (n,p) => `${n} stood out as an outstanding Ninja today—great focus, effort, and attitude the whole time. ⭐`,
-        (n,p) => `${n} was an exceptional student today, participating, staying engaged, and giving ${p.possAdj} best effort.`,
-        (n,p) => `${n} has been showing incredible progress and consistency in the dojo lately, and today really showed it.`
-      ],
-      behavior: [
-        (n,p) => `${n} showed excellent behavior today—respectful, focused, and kind to others.`,
-        (n,p) => `${n} was so well-behaved and set a great example for other Ninjas in the dojo today.`,
-        (n,p) => `${n} helped keep the dojo a fun, positive space for everyone with ${p.possAdj} awesome behavior today.`
-      ],
-      helper: [
-        (n,p) => `${n} helped another student in class today—such a kind and thoughtful moment of leadership. 🤝`,
-        (n,p) => `${n} went out of ${p.possAdj} way to support a fellow Ninja today, which really stood out to our team.`,
-        (n,p) => `${n} showed great leadership and teamwork by helping other students during class today.`
-      ],
-      attendance: [
-        (n,p) => `${n} has had fantastic attendance lately, and that consistency is really helping ${p.obj} grow.`,
-        (n,p) => `${n} has been so committed to showing up regularly, and we’re seeing great progress because of it.`,
-        (n,p) => `${n} is progressing quickly thanks to ${p.possAdj} strong and consistent attendance at Code Ninjas.`
-      ],
-      leadership: [
-        (n,p) => `${n} showed strong leadership and teamwork in the dojo today—encouraging others and working really well with the group. 🧠`,
-        (n,p) => `${n} stepped up and demonstrated great leadership skills in class today.`,
-        (n,p) => `${n} was a positive leader and role model in the dojo today, and we really appreciated ${p.possAdj} attitude and support of others.`
-      ],
-      birthday: [
-        (n,p) => `${n} had such a fun birthday at the dojo today—we loved celebrating with ${p.obj}! 🎉`,
-        (n,p) => `We had a great time celebrating ${n}’s birthday at Code Ninjas today.`,
-        (n,p) => `${n} brought such great energy to ${p.possAdj} birthday visit today and made the dojo feel extra festive. 🎂`
-      ]
+      belt: [(n,p) => `${n} leveled up ${p.possAdj} belt today! 🙌`, (n,p) => `${n} earned a new belt today!`],
+      project: [(n,p) => `${n} built a really awesome coding project today! 💻`],
+      outstanding: [(n,p) => `${n} stood out as an outstanding Ninja today! ⭐`],
+      behavior: [(n,p) => `${n} showed excellent behavior today—respectful and focused.`],
+      helper: [(n,p) => `${n} helped another student today—great leadership! 🤝`],
+      birthday: [(n,p) => `${n} had a fun birthday at the dojo today! 🎉`]
     };
 
-    const reasonLabels = {
-      belt: "Belt-Up",
-      project: "Cool Project",
-      outstanding: "Outstanding Student",
-      behavior: "Great Behavior",
-      helper: "Helping Another Ninja",
-      attendance: "Great Attendance",
-      leadership: "Leadership & Teamwork",
-      birthday: "Birthday Shoutout",
-      tour: "Tour Follow-up",
-      custom: "Custom Shoutout"
-    };
+    function buildFullMessage(name, reason, custom, sender, sensei, parent, pronoun, center){
+      const parentLine = parent ? `Hi ${parent.trim()},` : "Hi there,";
+      let core = "";
+      if(reason === "custom") core = `${name} earned a shout-out for ${custom || "doing great"}.`;
+      else if(reason === "tour") core = `${name} had a fun tour today!`;
+      else core = coreTemplates[reason][Math.floor(Math.random()*coreTemplates[reason].length)](name, pronoun);
 
-    function randomFrom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-    function buildCoreMessage(name, reason, customReason, senseiName, pronoun){
-      const trimmedName = (name || "").trim();
-      if(!trimmedName) return "";
-
-      if(reason === "custom"){
-        const detail = (customReason || "").trim() || "doing something awesome in the dojo today";
-        return `${trimmedName} earned a special shout-out today for ${detail}. ✨`;
-      }
-
-      if(reason === "tour"){
-        const s = (senseiName || "").trim();
-        if(s){
-          return `${s} had such a fun time with ${trimmedName} during their tour today. We loved showing them around the dojo and talking about how everything works.`;
-        }
-        return `${trimmedName} had a really fun tour at the dojo today. We loved meeting them and showing what Code Ninjas is all about.`;
-      }
-
-      const options = coreTemplates[reason];
-      if(!options || !options.length) return "";
-      return randomFrom(options)(trimmedName, pronoun);
+      let msg = `${parentLine}\nThis is ${sender} from ${center}.\n\n`;
+      msg += (reason === "newninja") ? core : `I just wanted to share how great ${name} was today. ${core}`;
+      msg += `\n\nI grabbed a quick photo of ${name} and thought you might like it. 😊`;
+      msg += buildInvitation(name);
+      msg += `\n\nThanks for being part of our dojo family! 💙`;
+      return msg;
     }
 
-    function buildFullMessage(name, reason, customReason, senderName, senseiName, parentName, pronoun, centerName, referralLink){
-      const core = buildCoreMessage(name, reason, customReason, senseiName, pronoun);
-      if(!core) return "";
-
-      if(reason === "birthday"){
-        return baseBirthdayMessage(name, parentName, core, senderName, pronoun, centerName, referralLink);
-      }
-      if(reason === "tour"){
-        return baseTourMessage(name, parentName, core, senderName, centerName, referralLink);
-      }
-      return baseStandardMessage(name, parentName, core, senderName, centerName, referralLink);
-    }
-
-    // ===== SUBJECT LINE =====
-    function buildEmailSubject(style, ninjaName, reason, centerLabel){
-      const n = (ninjaName || "").trim();
-      const r = reasonLabels[reason] || "Shoutout";
-      const c = (centerLabel || "Center").trim();
-
-      const base = n ? `Ninja Shoutout – ${n} – ${r}` : `Ninja Shoutout – ${r}`;
-      if(style === "warm"){
-        return n ? `So proud of ${n}! – ${r} 🥷💙 (${c})` : `Ninja Shoutout 🥷💙 (${c})`;
-      }
-      if(style === "hype"){
-        return n ? `LEVEL UP! ${n} – ${r} 🎉🔥 (${c})` : `LEVEL UP! Ninja Shoutout 🎉🔥 (${c})`;
-      }
-      return `${base} (${c})`;
-    }
-
-    // ===== BANNERS / CLIPBOARD =====
-    function showOk(msg){
-      const el = document.getElementById("okBanner");
-      el.textContent = msg || "Done!";
-      el.style.display = "block";
-      setTimeout(()=>{ el.style.display = "none"; }, 3200);
-    }
-
-    function showErr(msg){
-      const el = document.getElementById("errBanner");
-      el.textContent = msg || "Something went wrong. Please try again.";
-      el.style.display = "block";
-      setTimeout(()=>{ el.style.display = "none"; }, 4000);
-    }
-
-    async function copyToClipboard(text){
-      try{
-        await navigator.clipboard.writeText(text);
-        return true;
-      }catch(e){
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        ta.setSelectionRange(0, ta.value.length);
-        const ok = document.execCommand("copy");
-        document.body.removeChild(ta);
-        return ok;
-      }
-    }
-
-    // ===== IMAGE / CANVAS =====
-    let userImage = null;
-    let frameWideImage = null;
-    let frameStoryImage = null;
-    let frameWideLoaded = false;
-    let frameStoryLoaded = false;
-
-    let latestCoreMessage = "";
-    let currentReason = "";
-    let currentNinjaName = "";
-    let latestImageGenerated = false;
-
-    const canvasWide = document.getElementById("shoutoutCanvasWide");
-    const ctxWide = canvasWide.getContext("2d");
-
-    const canvasStory = document.getElementById("shoutoutCanvasStory");
-    const ctxStory = canvasStory.getContext("2d");
-
-    function loadFrames(){
-      frameWideImage = new Image();
-      frameWideImage.onload = () => { frameWideLoaded = true; };
-      frameWideImage.src = "ninja-shoutout-frame.png";
-
-      frameStoryImage = new Image();
-      frameStoryImage.onload = () => { frameStoryLoaded = true; };
-      frameStoryImage.src = "Congratulations! (Your Story).png";
-    }
-
-    function handlePhotoFile(file){
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e){
-        const img = new Image();
-        img.onload = function(){
-          userImage = img;
-          latestImageGenerated = false;
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function drawCoverImage(img, ctx, width, height, zoomFactor, panX, panY){
-      const iw = img.width;
-      const ih = img.height;
-      if(!iw || !ih) return;
-
-      const baseScale = Math.max(width/iw, height/ih);
-      const scale = baseScale * zoomFactor;
-
-      const sw = iw*scale;
-      const sh = ih*scale;
-
-      const maxShiftX = width*0.3;
-      const maxShiftY = height*0.3;
-
-      const shiftX = (panX/100)*maxShiftX;
-      const shiftY = (panY/100)*maxShiftY;
-
-      const sx = (width - sw)/2 + shiftX;
-      const sy = (height - sh)/2 + shiftY;
-
-      ctx.drawImage(img, sx, sy, sw, sh);
-    }
-
-    // NEW: Footer line on images
-    function drawVisitFooter(ctx, width, height, mode){
-      const text = "Visit CodeNinjas.com to learn more";
-      const fontSize = mode === "wide" ? Math.round(width * 0.020) : Math.round(width * 0.050);
-      const padX = mode === "wide" ? 26 : 18;
-      const padY = mode === "wide" ? 14 : 12;
-
-      ctx.save();
-      ctx.font = `800 ${fontSize}px system-ui, -apple-system, 'Segoe UI', sans-serif`;
-      const tw = ctx.measureText(text).width;
-
-      const boxW = tw + padX*2;
-      const boxH = fontSize + padY*2;
-
-      const x = (width - boxW) / 2;
-      const y = height - boxH - (mode === "wide" ? 22 : 26);
-
-      // bg
-      ctx.fillStyle = "rgba(0,0,0,0.55)";
-      ctx.beginPath();
-      if(ctx.roundRect) ctx.roundRect(x, y, boxW, boxH, 16);
-      else ctx.rect(x,y,boxW,boxH);
-      ctx.fill();
-
-      // text
-      ctx.fillStyle = "#ffffff";
-      ctx.textBaseline = "middle";
-      ctx.fillText(text, x + padX, y + boxH/2);
-
-      ctx.restore();
-    }
-
-    function renderShoutoutText(ctx, width, height, mode){
-      let message = latestCoreMessage;
-      if (!message) return;
-
-      if (currentReason === "birthday") {
-        const name = currentNinjaName || "your Ninja";
-        const offerLine = `We loved celebrating ${name} today! 1+1 CREATE + Clubs bundle for $249.`;
-        message = message + " " + offerLine;
-      }
-
-      let maxWidth, marginX, marginY, fontSizeStart, minFont, lineHeightMult, maxBgHeight;
-
-      if(mode === "wide"){
-        maxWidth = width * 0.38;
-        marginX = width * 0.06;
-        marginY = height * 0.08;
-        fontSizeStart = Math.round(width * 0.028);
-        minFont = 22;
-        lineHeightMult = 1.25;
-        maxBgHeight = height * 0.45;
-      }else{
-        maxWidth = width * 0.85;
-        marginX = width * 0.05;
-        marginY = height * 0.12; // slightly higher so footer has room
-        fontSizeStart = Math.round(width * 0.04);
-        minFont = 18;
-        lineHeightMult = 1.3;
-        maxBgHeight = height * 0.38;
-      }
-
-      function wrapLines(fontSize){
-        ctx.font = `${fontSize}px system-ui, -apple-system, 'Segoe UI', sans-serif`;
-        const words = message.split(/\s+/);
-        let lines = [];
-        let line = "";
-
-        for (let i = 0; i < words.length; i++) {
-          const testLine = line + words[i] + " ";
-          if (ctx.measureText(testLine).width > maxWidth && i > 0) {
-            lines.push(line.trim());
-            line = words[i] + " ";
-          } else {
-            line = testLine;
-          }
-        }
-        if (line.trim()) lines.push(line.trim());
-        return lines;
-      }
-
-      let fontSize = fontSizeStart;
-      let lines = wrapLines(fontSize);
-      let lineHeight = Math.round(fontSize * lineHeightMult);
-
-      while(fontSize > minFont){
-        const textHeight = lines.length * lineHeight;
-        const bgHeight = textHeight + lineHeight * 1.6;
-        if(bgHeight <= maxBgHeight) break;
-        fontSize -= 2;
-        lines = wrapLines(fontSize);
-        lineHeight = Math.round(fontSize * lineHeightMult);
-      }
-
-      const textHeight = lines.length * lineHeight;
-      const bgWidth = maxWidth + 40;
-      const bgHeight = Math.min(textHeight + lineHeight * 1.6, maxBgHeight);
-
-      let bgX, bgY;
-      if(mode === "wide"){
-        bgX = width - bgWidth - marginX;
-      }else{
-        bgX = (width - bgWidth)/2;
-      }
-      bgY = height - bgHeight - marginY;
-
-      ctx.fillStyle = "rgba(0,0,0,0.45)";
-      ctx.beginPath();
-      if (ctx.roundRect) ctx.roundRect(bgX, bgY, bgWidth, bgHeight, 25);
-      else ctx.rect(bgX, bgY, bgWidth, bgHeight);
-      ctx.fill();
-
-      ctx.textBaseline = "top";
-      ctx.fillStyle = "#ffffff";
-      ctx.font = `${fontSize}px system-ui, -apple-system, 'Segoe UI', sans-serif`;
-
-      const textX = bgX + 20;
-      let textY = bgY + 14;
-
-      const maxLines = Math.floor((bgHeight - 24) / lineHeight);
-      const safeLines = lines.slice(0, Math.max(1, maxLines));
-
-      safeLines.forEach(l => {
-        ctx.fillText(l, textX, textY);
-        textY += lineHeight;
-      });
-    }
-
-    function renderShoutoutImages(){
-      if(!latestCoreMessage){
-        showErr("Generate the shout-out first (Step 4) so we know what text to place on the images.");
-        return;
-      }
-      if(!userImage){
-        showErr("Please upload a Ninja photo first.");
-        return;
-      }
-      if(!frameWideLoaded || !frameStoryLoaded){
-        showErr("Frame images are still loading. Wait a moment and try again.");
-        return;
-      }
-
-      const zoom = parseFloat(document.getElementById("zoomSlider").value || "1");
-      const panX = parseFloat(document.getElementById("panXSlider").value || "0");
-      const panY = parseFloat(document.getElementById("panYSlider").value || "0");
-
-      const ww = canvasWide.width, wh = canvasWide.height;
-      ctxWide.clearRect(0,0,ww,wh);
-      drawCoverImage(userImage, ctxWide, ww, wh, zoom, panX, panY);
-      ctxWide.drawImage(frameWideImage, 0, 0, ww, wh);
-      renderShoutoutText(ctxWide, ww, wh, "wide");
-      drawVisitFooter(ctxWide, ww, wh, "wide"); // NEW
-
-      const sw = canvasStory.width, sh = canvasStory.height;
-      ctxStory.clearRect(0,0,sw,sh);
-      drawCoverImage(userImage, ctxStory, sw, sh, zoom, panX, panY);
-      ctxStory.drawImage(frameStoryImage, 0, 0, sw, sh);
-      renderShoutoutText(ctxStory, sw, sh, "story");
-      drawVisitFooter(ctxStory, sw, sh, "story"); // NEW
-
-      latestImageGenerated = true;
-    }
-
-    // ===== MAIN UI =====
-    document.addEventListener("DOMContentLoaded", function(){
-      loadFrames();
-
-      const stepper = document.getElementById("stepper");
-
-      const centerSelect = document.getElementById("centerSelect");
-      const centerEmailDisplay = document.getElementById("centerEmailDisplay");
-
+    document.addEventListener("DOMContentLoaded", () => {
       const nameInput = document.getElementById("ninjaName");
-      const parentInput = document.getElementById("parentName");
-      const pronounSelect = document.getElementById("pronounSelect");
       const senderInput = document.getElementById("senderName");
-      const referralLinkInput = document.getElementById("referralLink"); // NEW
-
-      const customInput = document.getElementById("customReason");
-      const senseiInput = document.getElementById("senseiName");
-      const senseiRow = document.getElementById("senseiRow");
-      const optionCards = document.querySelectorAll(".shoutout-option");
-
-      const subjectStyle = document.getElementById("subjectStyle");
-      const subjectPreview = document.getElementById("subjectPreview");
+      const reasonInputs = document.querySelectorAll('input[name="reason"]');
+      const genBtn = document.getElementById("generateBtn");
       const output = document.getElementById("messageOutput");
 
-      const photoInput = document.getElementById("photoInput");
-      const renderImageBtn = document.getElementById("renderImageBtn");
-      const downloadWideBtn = document.getElementById("downloadWideBtn");
-      const downloadStoryBtn = document.getElementById("downloadStoryBtn");
-      const emailBtn = document.getElementById("emailBtn");
-
-      const zoomSlider = document.getElementById("zoomSlider");
-      const panXSlider = document.getElementById("panXSlider");
-      const panYSlider = document.getElementById("panYSlider");
-      const zoomLabel = document.getElementById("zoomLabel");
-      const panXLabel = document.getElementById("panXLabel");
-      const panYLabel = document.getElementById("panYLabel");
-
-      const next1 = document.getElementById("next1");
-      const next2 = document.getElementById("next2");
-      const next3 = document.getElementById("next3");
-      const next4 = document.getElementById("next4");
-
-      const back2 = document.getElementById("back2");
-      const back3 = document.getElementById("back3");
-      const back4 = document.getElementById("back4");
-      const back5 = document.getElementById("back5");
-
-      const generateBtn = document.getElementById("generateBtn");
-      const copyBtn = document.getElementById("copyBtn");
-
-      let currentStep = 1;
-      function showStep(step){
-        document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
-        const el = document.getElementById("step"+step);
-        if(el) el.classList.add("active");
-        currentStep = step;
-
-        document.querySelectorAll(".pill").forEach(p => {
-          p.classList.toggle("active", parseInt(p.getAttribute("data-step"),10) === step);
-        });
+      function showStep(s) {
+        document.querySelectorAll(".step").forEach((el, i) => el.classList.toggle("active", i+1 === s));
+        document.querySelectorAll(".pill").forEach((p, i) => p.classList.toggle("active", i+1 === s));
       }
 
-      stepper.querySelectorAll(".pill").forEach(p => {
-        p.addEventListener("click", () => {
-          const target = parseInt(p.getAttribute("data-step"),10);
-          if(target < currentStep){ showStep(target); return; }
-          if(target === 2 && !canGoToStep2()) return showErr("Select a center first.");
-          if(target === 3 && !canGoToStep3()) return showErr("Fill Ninja details first.");
-          if(target === 4 && !canGoToStep4()) return showErr("Pick a shout-out reason first.");
-          if(target === 5 && !canGoToStep5()) return showErr("Generate the message first.");
-          showStep(target);
-        });
+      document.getElementById("next1").onclick = () => showStep(2);
+      document.getElementById("next2").onclick = () => showStep(3);
+      document.getElementById("next3").onclick = () => showStep(4);
+      document.getElementById("next4").onclick = () => showStep(5);
+      
+      document.getElementById("back2").onclick = () => showStep(1);
+      document.getElementById("back3").onclick = () => showStep(2);
+      document.getElementById("back4").onclick = () => showStep(3);
+      document.getElementById("back5").onclick = () => showStep(4);
+
+      const validate = () => {
+        document.getElementById("next1").disabled = !document.getElementById("centerSelect").value;
+        document.getElementById("next2").disabled = !nameInput.value || !senderInput.value;
+        document.getElementById("next3").disabled = !Array.from(reasonInputs).some(r => r.checked);
+      };
+      [nameInput, senderInput, ...reasonInputs].forEach(el => el.oninput = validate);
+      document.querySelectorAll(".shoutout-option").forEach(opt => opt.onclick = () => {
+        opt.querySelector("input").checked = true;
+        document.querySelectorAll(".shoutout-option").forEach(o => o.classList.toggle("selected", o.querySelector("input").checked));
+        validate();
       });
 
-      function getSelectedReason(){
-        const checked = document.querySelector('input[name="reason"]:checked');
-        return checked ? checked.value : "";
-      }
-
-      function updateCenterUI(){
-        const c = getCenter();
-        centerEmailDisplay.textContent = c.email;
-        next1.disabled = !c;
-      }
-
-      function updateSelectionVisuals(){
-        optionCards.forEach(card => {
-          const input = card.querySelector("input");
-          card.classList.toggle("selected", !!(input && input.checked));
-        });
-        const reason = getSelectedReason();
-        senseiRow.style.display = (reason === "tour") ? "block" : "none";
-        updateNextButtons();
-        updateSubjectPreview();
-      }
-
-      function updateSubjectPreview(){
-        const c = getCenter();
-        const style = subjectStyle.value;
-        const reason = getSelectedReason() || currentReason || "belt";
-        const subj = buildEmailSubject(style, nameInput.value, reason, c.label);
-        subjectPreview.textContent = subj;
-      }
-
-      function canGoToStep2(){ return !!getCenter(); }
-      function canGoToStep3(){ return canGoToStep2() && !!nameInput.value.trim() && !!(senderInput.value || "").trim(); }
-      function canGoToStep4(){ return canGoToStep3() && !!getSelectedReason(); }
-      function canGoToStep5(){ return canGoToStep4() && !!(output.value || "").trim(); }
-
-      function updateNextButtons(){
-        next1.disabled = !canGoToStep2();
-        next2.disabled = !canGoToStep3();
-        next3.disabled = !canGoToStep4();
-        next4.disabled = !canGoToStep5();
-      }
-
-      updateCenterUI();
-      updateNextButtons();
-      updateSubjectPreview();
-
-      centerSelect.addEventListener("change", () => {
-        updateCenterUI();
-        updateSubjectPreview();
-        updateNextButtons();
-      });
-
-      [nameInput, senderInput].forEach(el => el.addEventListener("input", () => {
-        updateNextButtons();
-        updateSubjectPreview();
-      }));
-      parentInput.addEventListener("input", updateSubjectPreview);
-      pronounSelect.addEventListener("change", updateSubjectPreview);
-      referralLinkInput.addEventListener("input", () => {}); // optional; no gating
-      subjectStyle.addEventListener("change", updateSubjectPreview);
-
-      optionCards.forEach(card => {
-        card.addEventListener("click", () => {
-          const input = card.querySelector("input");
-          if(input){
-            input.checked = true;
-            updateSelectionVisuals();
-          }
-        });
-      });
-      document.querySelectorAll('input[name="reason"]').forEach(i => {
-        i.addEventListener("change", updateSelectionVisuals);
-      });
-
-      next1.addEventListener("click", () => showStep(2));
-      back2.addEventListener("click", () => showStep(1));
-      next2.addEventListener("click", () => showStep(3));
-      back3.addEventListener("click", () => showStep(2));
-      next3.addEventListener("click", () => showStep(4));
-      back4.addEventListener("click", () => showStep(3));
-      next4.addEventListener("click", () => showStep(5));
-      back5.addEventListener("click", () => showStep(4));
-
-      generateBtn.addEventListener("click", () => {
-        const c = getCenter();
-        const name = nameInput.value;
-        const parentName = parentInput.value;
-        const reason = getSelectedReason();
-        const custom = customInput.value;
-        const senderName = senderInput.value || "Marina";
-        const senseiName = senseiInput.value;
-        const pronoun = getPronouns(pronounSelect.value);
-        const referralLink = (referralLinkInput.value || "").trim(); // NEW
-
-        if(!c){ showErr("Choose a center first."); showStep(1); return; }
-        if(!name.trim()){ showErr("Please enter the Ninja’s name first."); showStep(2); nameInput.focus(); return; }
-        if(!reason){ showErr("Please choose what you’re shouting them out for."); showStep(3); return; }
-
-        const core = buildCoreMessage(name, reason, custom, senseiName, pronoun);
-        if(!core){ showErr("Could not generate. Try again."); return; }
-
-        latestCoreMessage = core;
-        currentReason = reason;
-        currentNinjaName = name.trim();
-
-        const msg = buildFullMessage(name, reason, custom, senderName, senseiName, parentName, pronoun, c.centerName, referralLink);
+      genBtn.onclick = () => {
+        const reason = Array.from(reasonInputs).find(r => r.checked).value;
+        const msg = buildFullMessage(nameInput.value, reason, document.getElementById("customReason").value, senderInput.value, "", document.getElementById("parentName").value, getPronouns(document.getElementById("pronounSelect").value), getCenter().centerName);
         output.value = msg;
+        document.getElementById("next4").disabled = false;
+        document.getElementById("okBanner").style.display = "block";
+        document.getElementById("okBanner").innerText = "Message Generated!";
+      };
 
-        updateSubjectPreview();
-        updateNextButtons();
-        showOk("Generated! You can copy it or go to images.");
-      });
+      document.getElementById("copyBtn").onclick = () => {
+        navigator.clipboard.writeText(output.value);
+        alert("Copied!");
+      };
 
-      copyBtn.addEventListener("click", async () => {
-        const text = (output.value || "").trim();
-        if(!text){ showErr("Generate the message first."); return; }
-        const ok = await copyToClipboard(text);
-        ok ? showOk("Copied! 📋") : showErr("Couldn’t copy automatically. Please copy manually.");
-      });
-
-      photoInput.addEventListener("change", (e) => {
-        const file = e.target.files && e.target.files[0];
-        if(file){
-          handlePhotoFile(file);
-          latestImageGenerated = false;
-          showOk("Photo loaded! Drag/zoom then generate images.");
-        }
-      });
-
-      function refreshSliderLabels(){
-        zoomLabel.textContent = `${parseFloat(zoomSlider.value).toFixed(2)}×`;
-        panXLabel.textContent = panXSlider.value;
-        panYLabel.textContent = panYSlider.value;
-      }
-      [zoomSlider, panXSlider, panYSlider].forEach(sl => {
-        sl.addEventListener("input", () => {
-          refreshSliderLabels();
-          if(userImage && latestCoreMessage){
-            renderShoutoutImages();
-            downloadWideBtn.disabled = false;
-            downloadStoryBtn.disabled = false;
-          }
-        });
-      });
-      refreshSliderLabels();
-
-      function clamp(num, min, max){ return Math.max(min, Math.min(max, num)); }
-
-      function attachCanvasInteractions(canvasEl){
-        let dragging = false;
-        let startX = 0, startY = 0;
-        let startPanX = 0, startPanY = 0;
-
-        canvasEl.addEventListener("pointerdown", (e) => {
-          if(!userImage) return;
-          dragging = true;
-          canvasEl.setPointerCapture(e.pointerId);
-          startX = e.clientX;
-          startY = e.clientY;
-          startPanX = parseFloat(panXSlider.value || "0");
-          startPanY = parseFloat(panYSlider.value || "0");
-        });
-
-        canvasEl.addEventListener("pointermove", (e) => {
-          if(!dragging) return;
-          const dx = e.clientX - startX;
-          const dy = e.clientY - startY;
-
-          const sens = 0.25;
-          panXSlider.value = clamp(startPanX + dx * sens, -100, 100);
-          panYSlider.value = clamp(startPanY + dy * sens, -100, 100);
-
-          refreshSliderLabels();
-          if(userImage && latestCoreMessage){
-            renderShoutoutImages();
-            downloadWideBtn.disabled = false;
-            downloadStoryBtn.disabled = false;
-          }
-        });
-
-        canvasEl.addEventListener("pointerup", () => { dragging = false; });
-        canvasEl.addEventListener("pointercancel", () => { dragging = false; });
-
-        canvasEl.addEventListener("wheel", (e) => {
-          if(!userImage) return;
-          e.preventDefault();
-          const z = parseFloat(zoomSlider.value || "1");
-          const delta = e.deltaY > 0 ? -0.06 : 0.06;
-          const next = clamp(z + delta, parseFloat(zoomSlider.min), parseFloat(zoomSlider.max));
-          zoomSlider.value = next.toFixed(2);
-          refreshSliderLabels();
-
-          if(userImage && latestCoreMessage){
-            renderShoutoutImages();
-            downloadWideBtn.disabled = false;
-            downloadStoryBtn.disabled = false;
-          }
-        }, { passive:false });
-      }
-      attachCanvasInteractions(canvasWide);
-      attachCanvasInteractions(canvasStory);
-
-      renderImageBtn.addEventListener("click", () => {
-        renderShoutoutImages();
-        downloadWideBtn.disabled = false;
-        downloadStoryBtn.disabled = false;
-        showOk("Images generated!");
-      });
-
-      downloadWideBtn.addEventListener("click", () => {
-        const dataUrl = canvasWide.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.href = dataUrl;
-        link.download = "ninja-shoutout-landscape.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        showOk("Landscape downloaded.");
-      });
-
-      downloadStoryBtn.addEventListener("click", () => {
-        const dataUrl = canvasStory.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.href = dataUrl;
-        link.download = "ninja-shoutout-story.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        showOk("Story downloaded.");
-      });
-
-      emailBtn.addEventListener("click", () => {
-        const text = (output.value || "").trim();
-        if(!text){ showErr("Generate the message first (Step 4) before emailing."); showStep(4); return; }
-        if(!latestImageGenerated){ showErr("Generate the images first, then download them to attach in your email."); return; }
-
-        const c = getCenter();
-        const style = subjectStyle.value || "simple";
-        const reason = currentReason || getSelectedReason() || "belt";
-        const subject = buildEmailSubject(style, nameInput.value, reason, c.label);
-
-        showOk(`Subject: ${subject}`);
-
-        const body =
-          text +
-          "\n\n---\n" +
-          "Please see attached image files (ninja-shoutout-landscape.png and/or ninja-shoutout-story.png) for the shout-out pictures.\n" +
-          "(Generated with Ninja Shout-Out Builder)";
-
-        const mailto = `mailto:${encodeURIComponent(c.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        window.location.href = mailto;
-      });
-
-      next1.disabled = false;
-      updateSelectionVisuals();
-      updateNextButtons();
-      showStep(1);
+      validate();
     });
   </script>
 </body>
